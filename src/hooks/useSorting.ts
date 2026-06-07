@@ -20,9 +20,9 @@ export function useSorting() {
   // Estado para armazenar as métricas e o nome do algoritmo selecionado
   const [nomeAlgoritmo, setNomeAlgoritmo] = useState<string>("Nenhum Selecionado");
   const [complexidade, setComplexidade] = useState<InfoComplexidade>({
-    piorCaso: "---",
-    melhorCaso: "---",
-    espaco: "---",
+    piorCaso: "N/A",
+    melhorCaso: "N/A",
+    espaco: "N/A",
   });
 
   useEffect(() => {
