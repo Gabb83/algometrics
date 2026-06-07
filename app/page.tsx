@@ -1,9 +1,9 @@
 "use client";
 
 import Button from "@/src/components/Button";
+import Header from "@/src/components/Header";
 import { useState, useEffect } from "react";
 
-// Definição do tipo para as informações de complexidade
 type InfoComplexidade = {
   piorCaso: string;
   melhorCaso: string;
@@ -21,14 +21,14 @@ export default function Home() {
   const [estaOrdenando, setEstaOrdenando] = useState<boolean>(false);
   const [velocidade, setVelocidade] = useState<number>(50); 
   
-  // Estado para armazenar as métricas do algoritmo atual
+  // Estado para armazenar as métricas e o nome do algoritmo selecionado
+  const [nomeAlgoritmo, setNomeAlgoritmo] = useState<string>("Nenhum Selecionado");
   const [complexidade, setComplexidade] = useState<InfoComplexidade>({
     piorCaso: "---",
     melhorCaso: "---",
     espaco: "---",
   });
 
-  // Gera o primeiro array automaticamente ao carregar a página
   useEffect(() => {
     gerarNovoArray();
   }, []);
@@ -49,6 +49,7 @@ export default function Home() {
   const executarBubbleSort = async () => {
     if (estaOrdenando) return;
     
+    setNomeAlgoritmo("Bubble Sort");
     setComplexidade({
       piorCaso: "O(n²)",
       melhorCaso: "O(n)",
@@ -76,71 +77,68 @@ export default function Home() {
     setEstaOrdenando(false);
   };
 
-  // ALGORITMO 2: SELECTION SORT (Temporário até fazermos a lógica)
-  const executarSelectionSort = () => {
+  // ALGORITMO 2: SELECTION SORT
+  const executarSelectionSort = async () => {
     if (estaOrdenando) return;
+    
+    setNomeAlgoritmo("Selection Sort");
     setComplexidade({
       piorCaso: "O(n²)",
       melhorCaso: "O(n²)",
       espaco: "O(1)",
     });
-    alert("Selection Sort em breve! O card já mostra as complexidades reais dele.");
+    
+    setEstaOrdenando(true);
+    let arr = [...array];
+    const n = arr.length;
+
+    for (let i = 0; i < n - 1; i++) {
+      let indiceMinimo = i;
+      for (let j = i + 1; j < n; j++) {
+        setComparando([j, indiceMinimo]);
+        await sleep(velocidade);
+
+        if (arr[j] < arr[indiceMinimo]) {
+          indiceMinimo = j;
+        }
+      }
+      if (indiceMinimo !== i) {
+        let temp = arr[i];
+        arr[i] = arr[indiceMinimo];
+        arr[indiceMinimo] = temp;
+        setArray([...arr]);
+      }
+    }
+    setComparando([]);
+    setEstaOrdenando(false);
   };
 
-  // ALGORITMO 3: INSERTION SORT (Temporário até fazermos a lógica)
+  // ALGORITMO 3: INSERTION SORT (Estrutura pronta para a lógica futura)
   const executarInsertionSort = () => {
     if (estaOrdenando) return;
+    setNomeAlgoritmo("Insertion Sort");
     setComplexidade({
       piorCaso: "O(n²)",
       melhorCaso: "O(n)",
       espaco: "O(1)",
     });
-    alert("Insertion Sort em breve! O card já mostra as complexidades reais dele.");
+    alert("Insertion Sort em breve! A lógica será criada no próximo passo.");
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors">
-      
-      {/* HEADER / NAVBAR */}
-      <header className="flex flex-col sm:flex-row items-center justify-between px-8 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-4 z-10 shadow-xs">
-        <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-          AlgoMetrics
-        </h1>
-        
-        {/* CONTROLES TÉCNICOS */}
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex items-center gap-3 text-sm font-medium bg-zinc-100 dark:bg-zinc-800 px-4 py-2 rounded-xl">
-            <span className="text-zinc-500 dark:text-zinc-400">Velocidade:</span>
-            <input
-              type="range"
-              min="10"
-              max="200"
-              step="10"
-              value={velocidade}
-              onChange={(e) => setVelocidade(Number(e.target.value))}
-              disabled={estaOrdenando}
-              className="accent-indigo-600 disabled:opacity-50 cursor-pointer h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none"
-            />
-            <span className="text-xs text-indigo-600 dark:text-indigo-400 w-12 text-right">{velocidade}ms</span>
-          </div>
-
-          <button
-            onClick={gerarNovoArray}
-            disabled={estaOrdenando}
-            className="px-4 py-2 text-sm rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none font-medium shadow-2xs"
-          >
-            Embaralhar
-          </button>
-        </div>
-      </header>
+      <Header
+        velocidade={velocidade}
+        setVelocidade={setVelocidade}
+        disabled={estaOrdenando}
+        onEmbaralhar={gerarNovoArray}
+      />
 
       {/* CORPO PRINCIPAL */}
       <main className="grid grid-cols-1 md:grid-cols-10 flex-1">
         
         {/* MENU LATERAL */}
-        <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col justify-between gap-6">
-          
-          {/* Seção dos Botões */}
+        <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col gap-6">
           <div>
             <h2 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
               Algoritmos Simples
@@ -149,61 +147,59 @@ export default function Home() {
               <Button
                 onClick={executarBubbleSort} 
                 disabled={estaOrdenando} 
-                status={estaOrdenando} 
+                status={estaOrdenando && nomeAlgoritmo === "Bubble Sort"} 
                 label="Bubble Sort"
               />
               <Button
                 onClick={executarSelectionSort} 
                 disabled={estaOrdenando} 
-                status={false} 
+                status={estaOrdenando && nomeAlgoritmo === "Selection Sort"} 
                 label="Selection Sort"
               />
               <Button
                 onClick={executarInsertionSort} 
                 disabled={estaOrdenando} 
-                status={false} 
+                status={estaOrdenando && nomeAlgoritmo === "Insertion Sort"} 
                 label="Insertion Sort"
               />
             </div>
           </div>
-
-          {/* CARD DE COMPLEXIDADE (BIG O) */}
-          <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 bg-zinc-50 dark:bg-zinc-950/50">
-            <h3 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
-              Complexidade Big O
-            </h3>
-            
-            <div className="space-y-2.5 text-sm">
-              <div className="flex justify-between items-center">
-                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Pior Caso:</span>
-                <span className="font-mono font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 rounded text-xs">
-                  {complexidade.piorCaso}
-                </span>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Melhor Caso:</span>
-                <span className="font-mono font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded text-xs">
-                  {complexidade.melhorCaso}
-                </span>
-              </div>
-
-              <div className="border-t border-zinc-200 dark:border-zinc-800 my-1 pt-2 flex justify-between items-center">
-                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Espaço:</span>
-                <span className="font-mono font-medium text-blue-500 bg-blue-50 dark:bg-blue-950/30 px-2 py-0.5 rounded text-xs">
-                  {complexidade.espaco}
-                </span>
-              </div>
-            </div>
-          </div>
-
         </section>
 
-        {/* CONTAINER DO GRÁFICO */}
-        <section className="col-span-1 md:col-span-8 flex justify-center items-center p-6 md:p-12 bg-zinc-50 dark:bg-zinc-950">
+        {/* ÁREA DO GRÁFICO E CARDS DE COMPLEXIDADE */}
+        <section className="col-span-1 md:col-span-8 flex flex-col p-6 gap-6 bg-zinc-50 dark:bg-zinc-950">
           
-          <div className="flex items-end justify-center gap-1.5 w-full max-w-4xl h-[450px] bg-white dark:bg-zinc-900 rounded-2xl p-8 shadow-xs border border-zinc-200/60 dark:border-zinc-800/60">
-            <p>Bubble Sort</p>
+          {/* SEÇÃO SUPREMA: CARDS DE METRICAS */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 w-full max-w-4xl mx-auto">
+            
+            {/* CARD 0: Nome do Algoritmo Ativo */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col justify-center">
+              <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Algoritmo</p>
+              <p className="text-base font-bold text-indigo-600 dark:text-indigo-400 truncate mt-1">{nomeAlgoritmo}</p>
+            </div>
+
+            {/* CARD 1: Pior Caso */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+              <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Pior Caso</p>
+              <p className="text-2xl font-mono font-bold text-rose-500 mt-0.5">{complexidade.piorCaso}</p>
+            </div>
+
+            {/* CARD 2: Melhor Caso */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+              <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Melhor Caso</p>
+              <p className="text-2xl font-mono font-bold text-emerald-500 mt-0.5">{complexidade.melhorCaso}</p>
+            </div>
+
+            {/* CARD 3: Espaço Auxiliar */}
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+              <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Espaço (Memória)</p>
+              <p className="text-2xl font-mono font-bold text-blue-500 mt-0.5">{complexidade.espaco}</p>
+            </div>
+
+          </div>
+
+          {/* CONTAINER PRINCIPAL DO GRÁFICO */}
+          <div className="flex items-end justify-center gap-1.5 w-full max-w-4xl h-95 bg-white dark:bg-zinc-900 rounded-2xl p-8 shadow-xs border border-zinc-200/60 dark:border-zinc-800/60 mx-auto">
             {array.map((valor, indice) => {
               const isComparando = comparando.includes(indice);
 
@@ -220,6 +216,7 @@ export default function Home() {
               );
             })}
           </div>
+
         </section>
 
       </main>
