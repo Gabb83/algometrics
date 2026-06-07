@@ -3,9 +3,16 @@
 import Button from "@/src/components/Button";
 import { useState, useEffect } from "react";
 
+// Definição do tipo para as informações de complexidade
+type InfoComplexidade = {
+  piorCaso: string;
+  melhorCaso: string;
+  espaco: string;
+};
+
 export default function Home() {
   // CONFIGURAÇÕES INICIAIS
-  const TAMANHO_PADRAO = 24; // Aumentei um pouco para preencher melhor a tela ampla
+  const TAMANHO_PADRAO = 24; 
   const ALTURA_MAXIMA = 320; 
 
   // ESTADOS (STATES)
@@ -13,11 +20,20 @@ export default function Home() {
   const [comparando, setComparando] = useState<number[]>([]);
   const [estaOrdenando, setEstaOrdenando] = useState<boolean>(false);
   const [velocidade, setVelocidade] = useState<number>(50); 
+  
+  // Estado para armazenar as métricas do algoritmo atual
+  const [complexidade, setComplexidade] = useState<InfoComplexidade>({
+    piorCaso: "---",
+    melhorCaso: "---",
+    espaco: "---",
+  });
 
+  // Gera o primeiro array automaticamente ao carregar a página
   useEffect(() => {
     gerarNovoArray();
   }, []);
 
+  // FUNÇÕES DE CONTROLE
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const gerarNovoArray = () => {
@@ -29,11 +45,17 @@ export default function Home() {
     setComparando([]);
   };
 
-  // ALGORITMO: BUBBLE SORT
+  // ALGORITMO 1: BUBBLE SORT
   const executarBubbleSort = async () => {
     if (estaOrdenando) return;
+    
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n)",
+      espaco: "O(1)",
+    });
+    
     setEstaOrdenando(true);
-
     let arr = [...array];
     const n = arr.length;
 
@@ -54,9 +76,27 @@ export default function Home() {
     setEstaOrdenando(false);
   };
 
-  // Funções temporárias para os próximos botões
-  const executarSelectionSort = () => !estaOrdenando && alert("Selection Sort em breve!");
-  const executarInsertionSort = () => !estaOrdenando && alert("Insertion Sort em breve!");
+  // ALGORITMO 2: SELECTION SORT (Temporário até fazermos a lógica)
+  const executarSelectionSort = () => {
+    if (estaOrdenando) return;
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n²)",
+      espaco: "O(1)",
+    });
+    alert("Selection Sort em breve! O card já mostra as complexidades reais dele.");
+  };
+
+  // ALGORITMO 3: INSERTION SORT (Temporário até fazermos a lógica)
+  const executarInsertionSort = () => {
+    if (estaOrdenando) return;
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n)",
+      espaco: "O(1)",
+    });
+    alert("Insertion Sort em breve! O card já mostra as complexidades reais dele.");
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors">
@@ -97,8 +137,10 @@ export default function Home() {
       {/* CORPO PRINCIPAL */}
       <main className="grid grid-cols-1 md:grid-cols-10 flex-1">
         
-        {/* MENU LATERAL ASIDE */}
-        <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col gap-4">
+        {/* MENU LATERAL */}
+        <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 flex flex-col justify-between gap-6">
+          
+          {/* Seção dos Botões */}
           <div>
             <h2 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
               Algoritmos Simples
@@ -124,11 +166,44 @@ export default function Home() {
               />
             </div>
           </div>
+
+          {/* CARD DE COMPLEXIDADE (BIG O) */}
+          <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 bg-zinc-50 dark:bg-zinc-950/50">
+            <h3 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
+              Complexidade Big O
+            </h3>
+            
+            <div className="space-y-2.5 text-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Pior Caso:</span>
+                <span className="font-mono font-bold text-rose-500 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 rounded text-xs">
+                  {complexidade.piorCaso}
+                </span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Melhor Caso:</span>
+                <span className="font-mono font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded text-xs">
+                  {complexidade.melhorCaso}
+                </span>
+              </div>
+
+              <div className="border-t border-zinc-200 dark:border-zinc-800 my-1 pt-2 flex justify-between items-center">
+                <span className="text-zinc-500 dark:text-zinc-400 text-xs">Espaço:</span>
+                <span className="font-mono font-medium text-blue-500 bg-blue-50 dark:bg-blue-950/30 px-2 py-0.5 rounded text-xs">
+                  {complexidade.espaco}
+                </span>
+              </div>
+            </div>
+          </div>
+
         </section>
 
         {/* CONTAINER DO GRÁFICO */}
-        <section className="col-span-1 md:col-span-8 p-6 md:p-12 bg-zinc-50 dark:bg-zinc-950">
+        <section className="col-span-1 md:col-span-8 flex justify-center items-center p-6 md:p-12 bg-zinc-50 dark:bg-zinc-950">
+          
           <div className="flex items-end justify-center gap-1.5 w-full max-w-4xl h-[450px] bg-white dark:bg-zinc-900 rounded-2xl p-8 shadow-xs border border-zinc-200/60 dark:border-zinc-800/60">
+            <p>Bubble Sort</p>
             {array.map((valor, indice) => {
               const isComparando = comparando.includes(indice);
 
