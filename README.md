@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📶 AlgoMetrics
 
-## Getting Started
+O AlgoMetrics é um visualizador interativo desenvolvido em Next.js, TypeScript e Tailwind CSS que transforma a lógica abstrata de algoritmos de ordenação em animações gráficas em tempo real. Ele é projetado para ajudar estudantes e entusiastas de programação a entenderem melhor como os algoritmos de ordenação funcionam, proporcionando uma experiência visual imersiva.
 
-First, run the development server:
+A aplicação permite que estudantes e desenvolvedores controlem a velocidade da execução, embaralhem dados instantaneamente e analisem o comportamento visual de cada método. Ao integrar tabelas dinâmicas de complexidade Big O, ele serve como uma ferramenta educacional poderosa para compreender a eficiência de tempo e espaço de estruturas de dados.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Funcionalidades
+- Visualização interativa de algoritmos de ordenação.
+- Controle de velocidade de execução.
+- Embaralhamento instantâneo de dados.
+- Tabelas dinâmicas de complexidade Big O.
+- Interface intuitiva e responsiva.
+
+## 🛠️ Tecnologias Utilizadas
+- Next.js
+- TypeScript
+- Tailwind CSS
+- React
+
+## 📚 Algoritmos de Ordenação Implementados
+- Bubble Sort
+- Selection Sort
+
+## 📈 Complexidade Big O
+- Bubble Sort: O(n^2)
+- Selection Sort: O(n^2)
+
+## 📂 Estrutura do Projeto
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+├── app
+│   └── page.tsx
+├── public
+│   └── images
+├── src
+│   └── components
+│       ├── Button.tsx
+│       ├── Header.tsx
+│       ├── MetricsCard.tsx
+|       └── SortingVisualizer.tsx
+├── hooks
+│   └── useSorting.ts
+├── .gitignore
+├── package.json
+├── tsconfig.json
+└── README.md     
+```
+## 📌 Como Usar
+1. Clone o repositório: `git clone
+2. Navegue até o diretório do projeto: `cd algo-metrics`
+3. Instale as dependências: `npm install`
+4. Inicie o servidor de desenvolvimento: `npm run dev`
+5. Acesse a aplicação em `http://localhost:3000`
