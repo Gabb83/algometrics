@@ -168,11 +168,59 @@ export function useSorting() {
     setEstaOrdenando(false);
   };
 
-  const executarInsertionSort = () => {
+  const executarInsertionSort = async () => {
     if (estaOrdenando) return;
+
     setNomeAlgoritmo("Insertion Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n)", espaco: "O(1)" });
-    alert("Insertion Sort em breve!");
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n)",
+      espaco: "O(1)",
+    });
+    
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    let arr = [...array];
+    const n = arr.length;
+
+    // O Insertion Sort começa do segundo elemento (índice 1)
+    for (let i = 1; i < n; i++) {
+      let atual = arr[i];
+      let j = i - 1;
+
+      // Destaca o elemento atual que estamos tentando encaixar
+      setComparando([i, j]);
+      setComparacoes((prev) => prev + 1);
+      await sleep(velocidade);
+
+      // Empurra os elementos maiores que o 'atual' uma posição para a frente
+      while (j >= 0 && arr[j] > atual) {
+        if (deveParar) return;
+
+        // Mostra a comparação ativa acontecendo na varredura reversa
+        setComparando([j, j + 1]);
+        setComparacoes((prev) => prev + 1);
+
+        arr[j + 1] = arr[j]; // Empurra o elemento para a direita
+        setTrocas((prev) => prev + 1); // Conta como uma movimentação de escrita
+        setArray([...arr]);
+        
+        await sleep(velocidade);
+        j--;
+      }
+    
+      // Insere o elemento atual na sua posição correta encontrada
+      arr[j + 1] = atual;
+      setArray([...arr]);
+    }
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
   };
 
   return {
