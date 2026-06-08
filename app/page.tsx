@@ -13,7 +13,8 @@ export default function Home() {
     setVelocidade, nomeAlgoritmo,
     complexidade, gerarNovoArray,
     executarBubbleSort, executarSelectionSort,
-    executarInsertionSort,
+    executarInsertionSort, tempo,
+    trocas, comparacoes,
   } = useSorting();
 
   return (
@@ -56,8 +57,14 @@ export default function Home() {
         </section>
 
         {/* ÁREA DO GRÁFICO E CARDS DE COMPLEXIDADE */}
-        <section className="col-span-1 md:col-span-8 flex flex-col p-6 gap-6 bg-zinc-50 dark:bg-zinc-950">
-          <MetricsCards nomeAlgoritmo={nomeAlgoritmo} complexidade={complexidade} />
+        <section className="w-full col-span-1 md:col-span-8 flex flex-col p-6 gap-6 bg-zinc-50 dark:bg-zinc-950">
+          <MetricsCards 
+            nomeAlgoritmo={nomeAlgoritmo} 
+            complexidade={complexidade} 
+            comparacoes={comparacoes}
+            trocas={trocas}
+            tempo={tempo}  
+          />
           <SortingVisualizer array={array} comparando={comparando} />
         </section>
       </main>
