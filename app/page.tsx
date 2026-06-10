@@ -12,10 +12,9 @@ export default function Home() {
     estaOrdenando, velocidade,
     setVelocidade, nomeAlgoritmo,
     complexidade, gerarNovoArray,
-    executarBubbleSort, executarSelectionSort,
-    executarInsertionSort, tempo,
-    trocas, comparacoes,
-    executarCocktailSort,
+    tempo, trocas, comparacoes,
+    executarBubbleSort, executarSelectionSort, executarInsertionSort, executarCocktailSort, 
+    executarMergeSort,
   } = useSorting();
 
   return (
@@ -61,6 +60,14 @@ export default function Home() {
               />
             </div>
             <h2 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3 mt-6">Algoritmos Avançados</h2>
+            <div className="flex flex-col gap-2.5">
+              <Button
+                onClick={executarMergeSort} 
+                disabled={estaOrdenando} 
+                status={estaOrdenando && nomeAlgoritmo === "Merge Sort"} 
+                label="Merge Sort"
+              />
+            </div>
           </div>
         </section>
 

@@ -300,6 +300,111 @@ export function useSorting() {
     setEstaOrdenando(false);
   }
 
+  const executarMergeSort = async () => {
+  if (estaOrdenando) return;
+
+  setNomeAlgoritmo("Merge Sort");
+  setComplexidade({
+    piorCaso: "O(n log n)",
+    melhorCaso: "O(n log n)",
+    espaco: "O(n)",
+  });
+
+  setComparacoes(0);
+  setTrocas(0);
+  setDeveParar(false);
+  setEstaOrdenando(true);
+  iniciarCronometro();
+
+  const arr = [...array];
+
+  const merge = async (
+    arr: number[],
+    inicio: number,
+    meio: number,
+    fim: number
+  ) => {
+    const esquerda = arr.slice(inicio, meio + 1);
+    const direita = arr.slice(meio + 1, fim + 1);
+
+    let i = 0;
+    let j = 0;
+    let k = inicio;
+
+    while (i < esquerda.length && j < direita.length) {
+      if (deveParar) return;
+
+      setComparando([inicio + i, meio + 1 + j]);
+      setComparacoes((prev) => prev + 1);
+
+      await sleep(velocidade);
+
+      if (esquerda[i] <= direita[j]) {
+        arr[k] = esquerda[i];
+        i++;
+      } else {
+        arr[k] = direita[j];
+        j++;
+      }
+
+      setTrocas((prev) => prev + 1);
+      setArray([...arr]);
+      k++;
+    }
+
+    while (i < esquerda.length) {
+      if (deveParar) return;
+
+      arr[k] = esquerda[i];
+
+      setTrocas((prev) => prev + 1);
+      setArray([...arr]);
+
+      await sleep(velocidade);
+
+      i++;
+      k++;
+    }
+
+    while (j < direita.length) {
+      if (deveParar) return;
+
+      arr[k] = direita[j];
+
+      setTrocas((prev) => prev + 1);
+      setArray([...arr]);
+
+      await sleep(velocidade);
+
+      j++;
+      k++;
+    }
+  };
+
+  const mergeSort = async (
+    arr: number[],
+    inicio: number,
+    fim: number
+  ): Promise<void> => {
+    if (deveParar) return;
+
+    if (inicio >= fim) return;
+
+    const meio = Math.floor((inicio + fim) / 2);
+
+    await mergeSort(arr, inicio, meio);
+    await mergeSort(arr, meio + 1, fim);
+
+    await merge(arr, inicio, meio, fim);
+  };
+
+  await mergeSort(arr, 0, arr.length - 1);
+
+  pararCronometro();
+  setComparando([]);
+  setEstaOrdenando(false);
+};
+
   return {
     array,
     comparando,
@@ -317,5 +422,6 @@ export function useSorting() {
     executarSelectionSort,
     executarInsertionSort,
     executarCocktailSort,
+    executarMergeSort,
   };
 }
