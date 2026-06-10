@@ -223,6 +223,83 @@ export function useSorting() {
     setEstaOrdenando(false);
   };
 
+  const executarCocktailSort = async () => {
+    if(estaOrdenando) return;
+
+    setNomeAlgoritmo("Cocktail Sort");
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n)",
+      espaco: "O(1)",
+    });
+
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    let arr = [...array];
+    let inicio = 0;
+    let fim = arr.length - 1;
+    let houveTroca = true;
+
+    while (houveTroca) {
+      houveTroca = false;
+
+      // 1ª ETAPA: Da esquerda para a direita (Igual ao Bubble Sort)
+      for (let i = inicio; i < fim; i++) {
+        if (deveParar) return; // Checagem do botão Reset
+
+        setComparando([i, i + 1]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidade);
+
+        if (arr[i] > arr[i + 1]) {
+          let temp = arr[i];
+          arr[i] = arr[i + 1];
+          arr[i + 1] = temp;
+
+          setTrocas((prev) => prev + 1);
+          setArray([...arr]);
+          houveTroca = true;
+        }
+      }
+      if (!houveTroca) break;
+
+      // Reduz o 'fim' porque o maior elemento já está na posição correta
+      fim--;
+
+      // Reseta para a próxima varredura interna detectar novas trocas
+      houveTroca = false;
+
+      // 2ª ETAPA: Da direita para a esquerda (A mágica do Cocktail)
+      for (let i = fim - 1; i >= inicio; i--) {
+        if (deveParar) return; // Checagem do botão Reset
+
+        setComparando([i, i + 1]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidade);
+
+        if (arr[i] > arr[i + 1]) {
+          let temp = arr[i];
+          arr[i] = arr[i + 1];
+          arr[i + 1] = temp;
+
+          setTrocas((prev) => prev + 1);
+          setArray([...arr]);
+          houveTroca = true;
+        }
+      }
+
+      inicio++;
+    }
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
+  }
+
   return {
     array,
     comparando,
@@ -239,5 +316,6 @@ export function useSorting() {
     executarBubbleSort,
     executarSelectionSort,
     executarInsertionSort,
+    executarCocktailSort,
   };
 }

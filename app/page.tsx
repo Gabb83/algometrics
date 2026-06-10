@@ -15,6 +15,7 @@ export default function Home() {
     executarBubbleSort, executarSelectionSort,
     executarInsertionSort, tempo,
     trocas, comparacoes,
+    executarCocktailSort,
   } = useSorting();
 
   return (
@@ -52,7 +53,14 @@ export default function Home() {
                 status={estaOrdenando && nomeAlgoritmo === "Insertion Sort"} 
                 label="Insertion Sort"
               />
+              <Button
+                onClick={executarCocktailSort} 
+                disabled={estaOrdenando} 
+                status={estaOrdenando && nomeAlgoritmo === "Insertion Sort"} 
+                label="Cocktail Sort"
+              />
             </div>
+            <h2 className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3 mt-6">Algoritmos Avançados</h2>
           </div>
         </section>
 
