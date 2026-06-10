@@ -18,12 +18,15 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 - React
 
 ## 📚 Algoritmos de Ordenação Implementados
-- Bubble Sort
-- Selection Sort
+- Algoritmos Simples: Bubble Sort, Selection Sort, Insertion Sort, Cocktail Sort
+- Algoritmos Intermediários: Merge Sort
 
 ## 📈 Complexidade Big O
 - Bubble Sort: O(n^2)
 - Selection Sort: O(n^2)
+- Insertion Sort: O(n^2)
+- Cocktail Sort: O(n^2)
+- Merge Sort: O(n log n)
 
 ## 📂 Estrutura do Projeto
 ```
