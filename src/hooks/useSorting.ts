@@ -301,109 +301,186 @@ export function useSorting() {
   }
 
   const executarMergeSort = async () => {
-  if (estaOrdenando) return;
+    if (estaOrdenando) return;
 
-  setNomeAlgoritmo("Merge Sort");
-  setComplexidade({
-    piorCaso: "O(n log n)",
-    melhorCaso: "O(n log n)",
-    espaco: "O(n)",
-  });
+    setNomeAlgoritmo("Merge Sort");
+    setComplexidade({
+      piorCaso: "O(n log n)",
+      melhorCaso: "O(n log n)",
+      espaco: "O(n)",
+    });
 
-  setComparacoes(0);
-  setTrocas(0);
-  setDeveParar(false);
-  setEstaOrdenando(true);
-  iniciarCronometro();
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
 
-  const arr = [...array];
+    const arr = [...array];
 
-  const merge = async (
-    arr: number[],
-    inicio: number,
-    meio: number,
-    fim: number
-  ) => {
-    const esquerda = arr.slice(inicio, meio + 1);
-    const direita = arr.slice(meio + 1, fim + 1);
+    const merge = async (
+      arr: number[],
+      inicio: number,
+      meio: number,
+      fim: number
+    ) => {
+      const esquerda = arr.slice(inicio, meio + 1);
+      const direita = arr.slice(meio + 1, fim + 1);
 
-    let i = 0;
-    let j = 0;
-    let k = inicio;
+      let i = 0;
+      let j = 0;
+      let k = inicio;
 
-    while (i < esquerda.length && j < direita.length) {
-      if (deveParar) return;
+      while (i < esquerda.length && j < direita.length) {
+        if (deveParar) return;
 
-      setComparando([inicio + i, meio + 1 + j]);
-      setComparacoes((prev) => prev + 1);
+        setComparando([inicio + i, meio + 1 + j]);
+        setComparacoes((prev) => prev + 1);
 
-      await sleep(velocidade);
+        await sleep(velocidade);
 
-      if (esquerda[i] <= direita[j]) {
-        arr[k] = esquerda[i];
-        i++;
-      } else {
-        arr[k] = direita[j];
-        j++;
+        if (esquerda[i] <= direita[j]) {
+          arr[k] = esquerda[i];
+          i++;
+        } else {
+          arr[k] = direita[j];
+          j++;
+        }
+
+        setTrocas((prev) => prev + 1);
+        setArray([...arr]);
+        k++;
       }
 
-      setTrocas((prev) => prev + 1);
-      setArray([...arr]);
-      k++;
-    }
+      while (i < esquerda.length) {
+        if (deveParar) return;
 
-    while (i < esquerda.length) {
+        arr[k] = esquerda[i];
+
+        setTrocas((prev) => prev + 1);
+        setArray([...arr]);
+
+        await sleep(velocidade);
+
+        i++;
+        k++;
+      }
+
+      while (j < direita.length) {
+        if (deveParar) return;
+
+        arr[k] = direita[j];
+
+        setTrocas((prev) => prev + 1);
+        setArray([...arr]);
+
+        await sleep(velocidade);
+
+        j++;
+        k++;
+      }
+    };
+
+    const mergeSort = async (
+      arr: number[],
+      inicio: number,
+      fim: number
+    ): Promise<void> => {
       if (deveParar) return;
 
-      arr[k] = esquerda[i];
+      if (inicio >= fim) return;
+
+      const meio = Math.floor((inicio + fim) / 2);
+
+      await mergeSort(arr, inicio, meio);
+      await mergeSort(arr, meio + 1, fim);
+
+      await merge(arr, inicio, meio, fim);
+    };
+
+    await mergeSort(arr, 0, arr.length - 1);
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
+  };
+
+  const executarQuickSort = async () => {
+    if(estaOrdenando) return;
+
+    setNomeAlgoritmo("Quick Sort")
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n log n)",
+      espaco: "O(n log n)",
+    });
+
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    let arr = [...array];
+  
+    // Chamada da função recursiva auxiliar passando o array, o início (0) e o fim (n-1)
+    await quicksortRecursivo(arr, 0, arr.length - 1);
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
+  };
+
+  const quicksortRecursivo = async (arr: number[], inicio: number, fim: number) => {
+    if (inicio >= fim || deveParar) return;
+
+    // Realiza o particionamento e pega o índice do pivô posicionado
+    const indicePivo = await particionar(arr, inicio, fim);
+
+    // Ordena recursivamente a metade esquerda e a metade direita
+    await quicksortRecursivo(arr, inicio, indicePivo - 1);
+    await quicksortRecursivo(arr, indicePivo + 1, fim);
+  };
+
+  const particionar = async (arr: number[], inicio: number, fim: number): Promise<number> => {
+    let pivote = arr[fim]; // Escolhemos o último elemento como pivô
+    let i = inicio - 1;    // Índice do menor elemento
+
+    for (let j = inicio; j < fim; j++) {
+      if (deveParar) return fim;
+
+      // Destaca o elemento atual 'j' e o 'pivô' que estão sendo comparados
+      setComparando([j, fim]);
+      setComparacoes((prev) => prev + 1);
+      await sleep(velocidade);
+
+      if (arr[j] < pivote) {
+        i++;
+        // Faz a troca de elementos menores para a esquerda do pivô
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+
+        setTrocas((prev) => prev + 1);
+        setArray([...arr]);
+      }
+    }
+
+    // Coloca o pivô na sua posição correta definitiva (entre os menores e maiores)
+    if (!deveParar) {
+      let temp = arr[i + 1];
+      arr[i + 1] = arr[fim];
+      arr[fim] = temp;
 
       setTrocas((prev) => prev + 1);
       setArray([...arr]);
-
-      await sleep(velocidade);
-
-      i++;
-      k++;
     }
 
-    while (j < direita.length) {
-      if (deveParar) return;
-
-      arr[k] = direita[j];
-
-      setTrocas((prev) => prev + 1);
-      setArray([...arr]);
-
-      await sleep(velocidade);
-
-      j++;
-      k++;
-    }
+    return i + 1; // Retorna a posição do pivô
   };
 
-  const mergeSort = async (
-    arr: number[],
-    inicio: number,
-    fim: number
-  ): Promise<void> => {
-    if (deveParar) return;
 
-    if (inicio >= fim) return;
 
-    const meio = Math.floor((inicio + fim) / 2);
-
-    await mergeSort(arr, inicio, meio);
-    await mergeSort(arr, meio + 1, fim);
-
-    await merge(arr, inicio, meio, fim);
-  };
-
-  await mergeSort(arr, 0, arr.length - 1);
-
-  pararCronometro();
-  setComparando([]);
-  setEstaOrdenando(false);
-};
 
   return {
     array,
@@ -423,5 +500,6 @@ export function useSorting() {
     executarInsertionSort,
     executarCocktailSort,
     executarMergeSort,
+    executarQuickSort,
   };
 }
