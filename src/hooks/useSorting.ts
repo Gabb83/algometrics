@@ -479,8 +479,94 @@ export function useSorting() {
     return i + 1; // Retorna a posição do pivô
   };
 
+  const executarHeapSort = async () => {
+    if (estaOrdenando) return;
 
+    setNomeAlgoritmo("Heap Sort");
+    setComplexidade({
+      piorCaso: "O(n log n)",   // Garantido! Não degrada como o Quick Sort
+      melhorCaso: "O(n log n)", // Mesmo se o array estiver ordenado, ele faz a estrutura
+      espaco: "O(1)",           // IN-PLACE! Diferente do Merge, não usa memória extra
+    });
 
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    let arr = [...array];
+    const n = arr.length;
+
+    // Passo 1: Constrói a Max-Heap (organiza o array em formato de árvore binária)
+    // Começamos do último nó pai e vamos subindo até a raiz
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      if (deveParar) return;
+      await heapify(arr, n, i);
+    }
+
+    // Passo 2: Extrai um a um os elementos da Heap
+    for (let i = n - 1; i > 0; i--) {
+      if (deveParar) return;
+
+      // O maior elemento está na raiz (índice 0). Movemos ele para o final do array.
+      let temp = arr[0];
+      arr[0] = arr[i];
+      arr[i] = temp;
+
+      setTrocas((prev) => prev + 1);
+      setArray([...arr]);
+      await sleep(velocidade);
+
+      // Reconstrói a árvore na parte restante que ainda não foi totalmente ordenada
+      await heapify(arr, i, 0);
+    }
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
+  };
+
+// Função auxiliar para transformar/manter uma subárvore com raiz no índice 'i' em uma Max-Heap
+  const heapify = async (arr: number[], tamanho: number, i: number) => {
+    if (deveParar) return;
+
+    let maior = i;          // Inicializa o maior como sendo a própria raiz
+    let esquerda = 2 * i + 1; // Índice do filho da esquerda na estrutura do array
+    let direita = 2 * i + 2;  // Índice do filho da direita na estrutura do array
+
+    // Se o filho da esquerda for maior que a raiz atual
+    if (esquerda < tamanho) {
+      setComparando([esquerda, maior]);
+      setComparacoes((prev) => prev + 1);
+      if (arr[esquerda] > arr[maior]) {
+        maior = esquerda;
+      }
+    }
+
+    // Se o filho da direita for maior que o maior encontrado até agora
+    if (direita < tamanho) {
+      setComparando([direita, maior]);
+      setComparacoes((prev) => prev + 1);
+      if (arr[direita] > arr[maior]) {
+        maior = direita;
+      }
+    }
+
+    // Se o maior não for a própria raiz, precisamos ajustar a árvore fazendo a troca
+    if (maior !== i) {
+      let troca = arr[i];
+      arr[i] = arr[maior];
+      arr[maior] = troca;
+
+      setTrocas((prev) => prev + 1);
+      setArray([...arr]);
+      await sleep(velocidade);
+
+      // Recursivamente ajusta a subárvore afetada pela troca
+      await heapify(arr, tamanho, maior);
+    }
+  };
 
   return {
     array,
@@ -501,5 +587,6 @@ export function useSorting() {
     executarCocktailSort,
     executarMergeSort,
     executarQuickSort,
+    executarHeapSort,
   };
 }

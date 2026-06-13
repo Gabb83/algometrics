@@ -14,7 +14,7 @@ export default function Home() {
     complexidade, gerarNovoArray,
     tempo, trocas, comparacoes,
     executarBubbleSort, executarSelectionSort, executarInsertionSort, executarCocktailSort, 
-    executarMergeSort, executarQuickSort
+    executarMergeSort, executarQuickSort, executarHeapSort,
   } = useSorting();
 
   return (
@@ -67,11 +67,17 @@ export default function Home() {
                 status={estaOrdenando && nomeAlgoritmo === "Merge Sort"} 
                 label="Merge Sort"
               />
-               <Button
+              <Button
                 onClick={executarQuickSort} 
                 disabled={estaOrdenando} 
                 status={estaOrdenando && nomeAlgoritmo === "Quick Sort"} 
                 label="Quick Sort"
+              />
+              <Button
+                onClick={executarHeapSort} 
+                disabled={estaOrdenando} 
+                status={estaOrdenando && nomeAlgoritmo === "Heap Sort"} 
+                label="Heap Sort"
               />
             </div>
           </div>
