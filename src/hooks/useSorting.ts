@@ -568,6 +568,68 @@ export function useSorting() {
     }
   };
 
+  const executarShellSort = async () => {
+    if (estaOrdenando) return;
+
+    setNomeAlgoritmo("Shell Sort");
+    setComplexidade({
+      piorCaso: "O(n log² n)",  // Depende da sequência de gaps escolhida, mas é bem menor que O(n²)
+      melhorCaso: "O(n log n)", 
+      espaco: "O(1)",           // IN-PLACE! Não usa memória auxiliar
+    });
+
+    setComparacoes(0);
+    setTrocas(0);
+    setDeveParar(false);
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    let arr = [...array];
+    const n = arr.length;
+
+    // Começa com um gap grande (metade do array) e vai reduzindo o gap por metade a cada rodada
+    for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+      if (deveParar) return;
+
+      // Faz um Insertion Sort "com saltos" para este tamanho de gap.
+      // Os primeiros elementos do gap [0..gap-1] já estão em ordem relativa de sublista.
+      for (let i = gap; i < n; i++) {
+        if (deveParar) return;
+
+        let atual = arr[i];
+        let j = i;
+
+        // Destaca as barras que estão sendo comparadas à distância do gap
+        setComparando([j, j - gap]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidade);
+
+        // Desloca os elementos da sublista até encontrar a posição correta do 'atual'
+        while (j >= gap && arr[j - gap] > atual) {
+          if (deveParar) return;
+
+          setComparando([j, j - gap]);
+          setComparacoes((prev) => prev + 1);
+
+          arr[j] = arr[j - gap];
+          setTrocas((prev) => prev + 1); // Conta como escrita de deslocamento na memória
+          setArray([...arr]);
+          await sleep(velocidade);
+
+          j -= gap;
+        }
+
+        // Coloca o elemento atual na sua posição correta da sublista
+        arr[j] = atual;
+        setArray([...arr]);
+      }
+    }
+
+    pararCronometro();
+    setComparando([]);
+    setEstaOrdenando(false);
+  };
+
   return {
     array,
     comparando,
@@ -588,5 +650,6 @@ export function useSorting() {
     executarMergeSort,
     executarQuickSort,
     executarHeapSort,
+    executarShellSort,
   };
 }
