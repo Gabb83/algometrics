@@ -18,12 +18,12 @@ export function useSorting() {
   const [comparando, setComparando] = useState<number[]>([]);
   const [estaOrdenando, setEstaOrdenando] = useState<boolean>(false);
   const [velocidade, setVelocidade] = useState<number>(50);
-  const [nomeAlgoritmo, setNomeAlgoritmo] = useState<string>("Nenhum Selecionado");
+  const [nomeAlgoritmo, setNomeAlgoritmo] = useState<string>("Selecionar");
   const [deveParar, setDeveParar] = useState<boolean>(false);
   const [complexidade, setComplexidade] = useState<InfoComplexidade>({
-    piorCaso: "---",
-    melhorCaso: "---",
-    espaco: "---",
+    piorCaso: "N/A",
+    melhorCaso: "N/A",
+    espaco: "N/A",
   });
 
   // 🌟 NOVOS ESTADOS PARA AS MÉTRICAS EM TEMPO REAL
