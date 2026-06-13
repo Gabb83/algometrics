@@ -12,14 +12,14 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 - Interface intuitiva e responsiva.
 
 ## 🛠️ Tecnologias Utilizadas
-- Next.js
-- TypeScript
-- Tailwind CSS
-- React
+  - Next.js 
+  - TypeScript
+  - Tailwind CSS
+  - React
 
 ## 📚 Algoritmos de Ordenação Implementados
 - Algoritmos Simples: Bubble Sort, Selection Sort, Insertion Sort, Cocktail Sort
-- Algoritmos Intermediários: Merge Sort
+- Algoritmos Avançados: Merge Sort, Quick Sort, Heap Sort.
 
 ## 📈 Complexidade Big O
 - Bubble Sort: O(n^2)
@@ -27,6 +27,8 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 - Insertion Sort: O(n^2)
 - Cocktail Sort: O(n^2)
 - Merge Sort: O(n log n)
+- Quick Sort: O(n log n) (média), O(n^2) (pior caso)
+- Heap Sort: O(n log n)
 
 ## 📂 Estrutura do Projeto
 ```
@@ -47,9 +49,22 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 ├── tsconfig.json
 └── README.md     
 ```
-## 📌 Como Usar
-1. Clone o repositório: `git clone
-2. Navegue até o diretório do projeto: `cd algo-metrics`
-3. Instale as dependências: `npm install`
-4. Inicie o servidor de desenvolvimento: `npm run dev`
-5. Acesse a aplicação em `http://localhost:3000`
+
+## 💻 Como Rodar o Projeto (Getting Started)
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Gabb83/data-structure-benchmark.git
+    ```
+2. Navegue até o diretório do projeto:
+    ```bash
+    cd data-structure-benchmark
+    ```
+3. Instale as dependências (certifique-se de ter o Node.js instalado):
+    ```bash
+    npm install
+    ```
+4. Inicie o servidor de desenvolvimento:
+    ```bash
+    npm run dev
+    ```
+5. Abra o navegador e acesse `http://localhost:3000` para ver o aplicativo em ação.
