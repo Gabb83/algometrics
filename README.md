@@ -17,28 +17,31 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
   - Tailwind CSS
   - React
 
-## 📚 Algoritmos de Ordenação Implementados
-- Algoritmos Simples: Bubble Sort, Selection Sort, Insertion Sort, Cocktail Sort
-- Algoritmos Avançados: Merge Sort, Quick Sort, Heap Sort.
 
-## 📈 Complexidade Big O
-- Bubble Sort: O(n^2)
-- Selection Sort: O(n^2)
-- Insertion Sort: O(n^2)
-- Cocktail Sort: O(n^2)
-- Merge Sort: O(n log n)
-- Quick Sort: O(n log n) (média), O(n^2) (pior caso)
-- Heap Sort: O(n log n)
+## 📚 Algoritmos de Ordenação & Complexidade Big O
+🔹 Algoritmos Simples
+- Bubble Sort - Complexidade de Tempo (Pior/Médio Caso): $O(n^2)$
+- Selection Sort - Complexidade de Tempo (Pior/Médio Caso): $O(n^2)$
+- Insertion Sort - Complexidade de Tempo (Pior/Médio Caso): $O(n^2)$
+- Cocktail Sort (Bubble Sort Bidirecional) - Complexidade de Tempo (Pior/Médio Caso): $O(n^2)$
+
+<br>
+
+🔸 Algoritmos Avançados
+- Merge Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$
+- Quick Sort - Complexidade de Tempo (Médio Caso): $O(n \log n)$
+- Heap Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$
+- Shell Sort - Complexidade de Tempo (Pior Caso): $O(n^2)$
 
 ## 📂 Estrutura do Projeto
 ```
 ├── app
 │   └── page.tsx
 ├── public
-│   └── images
 ├── src
 │   └── components
 │       ├── Button.tsx
+|       ├── Footer.tsx
 │       ├── Header.tsx
 │       ├── MetricsCard.tsx
 |       └── SortingVisualizer.tsx
@@ -53,11 +56,11 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 ## 💻 Como Rodar o Projeto (Getting Started)
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/Gabb83/data-structure-benchmark.git
+   git clone https://github.com/Gabb83/algometrics.git
     ```
 2. Navegue até o diretório do projeto:
     ```bash
-    cd data-structure-benchmark
+    cd algometrics
     ```
 3. Instale as dependências (certifique-se de ter o Node.js instalado):
     ```bash
@@ -67,4 +70,7 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
     ```bash
     npm run dev
     ```
-5. Abra o navegador e acesse `http://localhost:3000` para ver o aplicativo em ação.
+5. Abra o navegador e acesse  para ver o aplicativo em ação.
+    ```
+    http://localhost:3000
+    ```
