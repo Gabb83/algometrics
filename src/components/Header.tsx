@@ -10,10 +10,32 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="flex flex-col sm:flex-row items-center justify-between px-8 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-4 z-10 shadow-xs">
-      <h1 className="text-xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
-        AlgoMetrics
-      </h1>
       
+      <div className="flex items-center gap-2.5 group select-none">
+        {/* Box do Ícone com efeito hover responsivo */}
+        <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all duration-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-transparent group-hover:scale-105 group-hover:shadow-md group-hover:shadow-indigo-600/20">
+          <svg
+            className="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Três barras estilizadas representando o AlgoMetrics */}
+            <line x1="18" y1="20" x2="18" y2="4" />
+            <line x1="12" y1="20" x2="12" y2="10" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+        </div>
+        
+        {/* Texto do Logo com Contraste Premium */}
+        <h1 className="text-xl font-bold tracking-tight bg-linear-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+          AlgoMetrics
+        </h1>
+      </div>
+
       {/* CONTROLES TÉCNICOS */}
       <div className="flex flex-wrap items-center gap-6">
         <div className="flex items-center gap-3 text-sm font-medium bg-zinc-100 dark:bg-zinc-800 px-4 py-2 rounded-xl">
