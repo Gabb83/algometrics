@@ -7,7 +7,7 @@ export default function Footer() {
         <span>© {new Date().getFullYear()} AlgoMetrics.</span>
         <span className="hidden sm:inline text-zinc-300 dark:text-zinc-700">|</span>
         <span>
-          Desenvolvido com 💙 por{" "}
+          Desenvolvido por{" "}
           <Link 
             href="https://github.com/Gabb83" 
             target="_blank" 
