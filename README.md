@@ -4,6 +4,11 @@ O AlgoMetrics é um visualizador interativo desenvolvido em Next.js, TypeScript 
 
 A aplicação permite que estudantes e desenvolvedores controlem a velocidade da execução, embaralhem dados instantaneamente e analisem o comportamento visual de cada método. Ao integrar tabelas dinâmicas de complexidade Big O, ele serve como uma ferramenta educacional poderosa para compreender a eficiência de tempo e espaço de estruturas de dados.
 
+## 📸 Screenshots
+![Preview do AlgoMetrics](./public//images//dashboard-lightmode.png)
+![Preview do AlgoMetrics](./public//images//dashboard-darkmode.png)
+![Preview do AlgoMetrics](./public//images//dashboard-execucao.png)
+
 ## 🚀 Funcionalidades
 - Visualização interativa de algoritmos de ordenação.
 - Controle de velocidade de execução.
@@ -38,6 +43,7 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 ├── app
 │   └── page.tsx
 ├── public
+|   └── images
 ├── src
 │   └── components
 │       ├── Button.tsx
