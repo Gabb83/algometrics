@@ -192,94 +192,93 @@ export default function Home() {
       </main>
 
     ) : (
+      <main className="flex-1 overflow-y-auto bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-colors duration-200">
+        <div className="mb-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div>
+              <h2 className="text-lg font-bold text-zinc-900 dark:text-white">🔬 Modo Comparação</h2>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Compare dois algoritmos executando simultaneamente sobre o mesmo conjunto de dados.</p>
+            </div>
+          </div>
 
-      // ==========================
-      // MODO COMPARAÇÃO
-      // ==========================
-     <main className="flex-1 overflow-y-auto bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-colors duration-200">
-  {/* 🎛️ CONTROLES DE SELEÇÃO E DISPARO */}
-  <div className="flex items-center justify-left gap-4 max-w-2xl mx-auto mb-0 p-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 shadow-xs">
-    <div className="relative flex-1">
-      <select
-        value={leftAlgorithm}
-        onChange={(e) => setLeftAlgorithm(e.target.value)}
-        className="w-full appearance-none rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-4 py-2.5 pr-10 text-sm font-medium text-zinc-700 dark:text-zinc-300 shadow-2xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 cursor-pointer transition-all"
-      >
-        <option value="bubble">Bubble Sort</option>
-        <option value="selection">Selection Sort</option>
-        <option value="insertion">Insertion Sort</option>
-        <option value="cocktail">Cocktail Sort</option>
-        <option value="merge">Merge Sort</option>
-        <option value="quick">Quick Sort</option>
-        <option value="heap">Heap Sort</option>
-        <option value="shell">Shell Sort</option>
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-zinc-400">
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-      </div>
+          <div className="flex items-center justify-center gap-6 p-4">
+            {/* Algoritmo A */}
+            <div className="flex flex-col gap-2 min-w-[240px]">
+              <select
+                value={leftAlgorithm}
+                onChange={(e) => setLeftAlgorithm(e.target.value)}
+                className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 font-semibold outline-none focus:border-indigo-500"
+              >
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="cocktail">Cocktail Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                <option value="heap">Heap Sort</option>
+                <option value="shell">Shell Sort</option>
+              </select>
+            </div>
+
+            <div className="w-11 h-11 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-900 flex items-center justify-center">
+              <span className="font-bold text-indigo-600 dark:text-indigo-400">VS</span>
+            </div>
+
+            <div className="flex flex-col gap-2 min-w-[240px]">
+              <select
+                value={rightAlgorithm}
+                onChange={(e) => setRightAlgorithm(e.target.value)}
+                className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 font-semibold outline-none focus:border-indigo-500"
+              >
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="cocktail">Cocktail Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                <option value="heap">Heap Sort</option>
+                <option value="shell">Shell Sort</option>
+              </select>
+            </div>
+
+            <button
+              onClick={executarComparacao}
+              className=" group flex items-center gap-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-7 py-3 text-white font-semibold shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition active:scale-95 cursor-pointer"
+            >
+              <svg
+                className="w-5 h-5 group-hover:translate-x-0.5 transition"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M6 4l10 6-10 6V4z"/>
+              </svg>
+              Iniciar
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <ComparisonPanel
+            nomeAlgoritmo={left.nomeAlgoritmo}
+            array={left.array}
+            comparando={left.comparando}
+            complexidade={left.complexidade}
+            comparacoes={left.comparacoes}
+            trocas={left.trocas}
+            tempo={left.tempo}
+          />
+          <ComparisonPanel
+            nomeAlgoritmo={right.nomeAlgoritmo}
+            array={right.array}
+            comparando={right.comparando}
+            complexidade={right.complexidade}
+            comparacoes={right.comparacoes}
+            trocas={right.trocas}
+            tempo={right.tempo}
+          />
+        </div>
+      </main>
+      )}
     </div>
-
-    <div className="flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-lg px-3 py-1 text-xs font-bold text-zinc-500 dark:text-zinc-400 tracking-wider shadow-inner">
-      VS
-    </div>
-
-    <div className="relative flex-1">
-      <select
-        value={rightAlgorithm}
-        onChange={(e) => setRightAlgorithm(e.target.value)}
-        className="w-full appearance-none rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 px-4 py-2.5 pr-10 text-sm font-medium text-zinc-700 dark:text-zinc-300 shadow-2xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 dark:focus:ring-indigo-400/10 cursor-pointer transition-all"
-      >
-        <option value="bubble">Bubble Sort</option>
-        <option value="selection">Selection Sort</option>
-        <option value="insertion">Insertion Sort</option>
-        <option value="cocktail">Cocktail Sort</option>
-        <option value="merge">Merge Sort</option>
-        <option value="quick">Quick Sort</option>
-        <option value="heap">Heap Sort</option>
-        <option value="shell">Shell Sort</option>
-      </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-zinc-400">
-        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-      </div>
-    </div>
-
-    <button
-      onClick={executarComparacao}
-      className="px-6 py-2.5 rounded-xl bg-indigo-600 dark:bg-indigo-500 text-white text-sm font-semibold hover:bg-indigo-700 dark:hover:bg-indigo-600 shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 active:scale-95 transition-all cursor-pointer"
-    >
-      Comparar
-    </button>
-  </div>
-
-  {/* 📊 PAINÉIS DE VISUALIZAÇÃO LADO A LADO */}
-  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-
-    <ComparisonPanel
-      nomeAlgoritmo={left.nomeAlgoritmo}
-      array={left.array}
-      comparando={left.comparando}
-      complexidade={left.complexidade}
-      comparacoes={left.comparacoes}
-      trocas={left.trocas}
-      tempo={left.tempo}
-    />
-
-    <ComparisonPanel
-      nomeAlgoritmo={right.nomeAlgoritmo}
-      array={right.array}
-      comparando={right.comparando}
-      complexidade={right.complexidade}
-      comparacoes={right.comparacoes}
-      trocas={right.trocas}
-      tempo={right.tempo}
-    />
-
-</div>
-
-  {/*<Footer />*/}
-</main>
-
-    )}
-  </div>
-);
+  );
 }

@@ -71,7 +71,6 @@ export default function ComparisonStats({
           value={complexidade.espaco}
           color="text-sky-600 dark:text-sky-400"
         />
-
       </div>
     </div>
   );
