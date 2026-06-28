@@ -17,6 +17,11 @@ export default function Home() {
   const [leftAlgorithm, setLeftAlgorithm] = useState("bubble");
   const [rightAlgorithm, setRightAlgorithm] = useState("merge");
 
+  const embaralharAmbos = () => {
+    left.gerarNovoArray();
+    right.gerarNovoArray();
+  };
+
   const executarComparacao = () => {
     switch (leftAlgorithm) {
       case "bubble":
@@ -80,7 +85,7 @@ export default function Home() {
       velocidade={left.velocidade}
       setVelocidade={left.setVelocidade}
       disabled={left.estaOrdenando || right.estaOrdenando}
-      onEmbaralhar={left.gerarNovoArray}
+      onEmbaralhar={embaralharAmbos}
       viewMode={viewMode}
       onAlternarModoComparar={() =>
         setViewMode((v) => (v === "single" ? "compare" : "single"))
