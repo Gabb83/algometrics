@@ -27,7 +27,6 @@ export default function Button({
     >
       <span>{label}</span>
       
-      {/* Feedback visual dinâmico no canto direito do botão */}
       {status ? (
         <span className="flex h-2 w-2 relative">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-200 opacity-75"></span>

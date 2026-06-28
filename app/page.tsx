@@ -79,104 +79,79 @@ export default function Home() {
   };
 
   return (
-  <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-50 font-sans dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-50 font-sans dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors">
+      <Header
+        velocidade={left.velocidade}
+        setVelocidade={left.setVelocidade}
+        disabled={left.estaOrdenando || right.estaOrdenando}
+        onEmbaralhar={embaralharAmbos}
+        viewMode={viewMode}
+        onAlternarModoComparar={() =>
+          setViewMode((v) => (v === "single" ? "compare" : "single"))
+        }
+      />
 
-    <Header
-      velocidade={left.velocidade}
-      setVelocidade={left.setVelocidade}
-      disabled={left.estaOrdenando || right.estaOrdenando}
-      onEmbaralhar={embaralharAmbos}
-      viewMode={viewMode}
-      onAlternarModoComparar={() =>
-        setViewMode((v) => (v === "single" ? "compare" : "single"))
-      }
-    />
-
-    {viewMode === "single" ? (
-
-      // ==========================
-      // MODO ÚNICO
-      // ==========================
+      { viewMode === "single" ? (
       <main className="grid grid-cols-1 md:grid-cols-10 flex-1 overflow-hidden">
-
         <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 overflow-y-auto">
-
-          <h2 className="text-xs font-semibold text-zinc-400 uppercase mb-3">
-            Algoritmos Simples
-          </h2>
-
+          <h2 className="text-xs font-semibold text-zinc-400 uppercase mb-3">Algoritmos Simples</h2>
           <div className="flex flex-col gap-2.5">
-
             <Button
               onClick={left.executarBubbleSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Bubble Sort"}
               label="Bubble Sort"
             />
-
             <Button
               onClick={left.executarSelectionSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Selection Sort"}
               label="Selection Sort"
             />
-
             <Button
               onClick={left.executarInsertionSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Insertion Sort"}
               label="Insertion Sort"
             />
-
             <Button
               onClick={left.executarCocktailSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Cocktail Sort"}
               label="Cocktail Sort"
             />
-
           </div>
 
-          <h2 className="text-xs font-semibold text-zinc-400 uppercase mt-8 mb-3">
-            Algoritmos Avançados
-          </h2>
-
+          <h2 className="text-xs font-semibold text-zinc-400 uppercase mt-8 mb-3">Algoritmos Avançados</h2>
           <div className="flex flex-col gap-2.5">
-
             <Button
               onClick={left.executarMergeSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Merge Sort"}
               label="Merge Sort"
             />
-
             <Button
               onClick={left.executarQuickSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Quick Sort"}
               label="Quick Sort"
             />
-
             <Button
               onClick={left.executarHeapSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Heap Sort"}
               label="Heap Sort"
             />
-
             <Button
               onClick={left.executarShellSort}
               disabled={left.estaOrdenando}
               status={left.estaOrdenando && left.nomeAlgoritmo === "Shell Sort"}
               label="Shell Sort"
             />
-
           </div>
-
         </section>
 
         <section className="col-span-1 md:col-span-8 p-5 flex flex-col gap-5 overflow-y-auto">
-
           <MetricsCards
             nomeAlgoritmo={left.nomeAlgoritmo}
             complexidade={left.complexidade}
@@ -184,19 +159,14 @@ export default function Home() {
             trocas={left.trocas}
             tempo={left.tempo}
           />
-
           <SortingVisualizer
             array={left.array}
             comparando={left.comparando}
           />
-
           <Footer />
-
         </section>
-
       </main>
-
-    ) : (
+      ) : (
       <main className="flex-1 overflow-y-auto bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-colors duration-200">
         <div className="mb-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
@@ -208,7 +178,7 @@ export default function Home() {
 
           <div className="flex items-center justify-center gap-6 p-4">
             {/* Algoritmo A */}
-            <div className="flex flex-col gap-2 min-w-[240px]">
+            <div className="flex flex-col gap-2 min-w-60">
               <select
                 value={leftAlgorithm}
                 onChange={(e) => setLeftAlgorithm(e.target.value)}
@@ -229,7 +199,7 @@ export default function Home() {
               <span className="font-bold text-indigo-600 dark:text-indigo-400">VS</span>
             </div>
 
-            <div className="flex flex-col gap-2 min-w-[240px]">
+            <div className="flex flex-col gap-2 min-w-60">
               <select
                 value={rightAlgorithm}
                 onChange={(e) => setRightAlgorithm(e.target.value)}

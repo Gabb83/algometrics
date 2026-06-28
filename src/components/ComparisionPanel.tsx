@@ -18,15 +18,10 @@ export default function ComparisonPanel({
 }: ComparisonPanelProps) {
   return (
     <section className="flex flex-col h-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden">
-      {/* Cabeçalho */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <p className="text-xs uppercase tracking-widest text-zinc-400">
-            Algoritmo
-          </p>
-          <h2 className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
-            {nomeAlgoritmo}
-          </h2>
+          <p className="text-xs uppercase tracking-widest text-zinc-400">Algoritmo</p>
+          <h2 className="text-lg font-bold text-indigo-600 dark:text-indigo-400">{nomeAlgoritmo}</h2>
         </div>
         <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
       </div>

@@ -41,31 +41,26 @@ export default function ComparisonStats({
           value={`${tempo.toFixed(2)} s`}
           color="text-indigo-600 dark:text-indigo-400"
         />
-
         <StatItem
           label="Comparações"
           value={comparacoes}
           color="text-amber-600 dark:text-amber-400"
         />
-
         <StatItem
           label="Trocas"
           value={trocas}
           color="text-purple-600 dark:text-purple-400"
         />
-
         <StatItem
           label="Melhor Caso"
           value={complexidade.melhorCaso}
           color="text-emerald-600 dark:text-emerald-400"
         />
-
         <StatItem
           label="Pior Caso"
           value={complexidade.piorCaso}
           color="text-rose-600 dark:text-rose-400"
         />
-
         <StatItem
           label="Espaço"
           value={complexidade.espaco}
