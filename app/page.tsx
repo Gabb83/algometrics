@@ -6,26 +6,24 @@ import Header from "@/src/components/Header";
 import MetricsCards from "@/src/components/MetricsCard";
 import SortingVisualizer from "@/src/components/SortingVisualizer";
 import { useSorting } from "@/src/hooks/useSorting";
+import { useState } from "react";
 
 export default function Home() {
-  const {
-    array, comparando,
-    estaOrdenando, velocidade,
-    setVelocidade, nomeAlgoritmo,
-    complexidade, gerarNovoArray,
-    tempo, trocas, comparacoes,
-    executarBubbleSort, executarSelectionSort, executarInsertionSort, executarCocktailSort, 
-    executarMergeSort, executarQuickSort, executarHeapSort, executarShellSort,
-  } = useSorting();
+  const left = useSorting();
+  const right = useSorting();
+
+  const [viewMode, setViewMode] = useState<"single" | "compare">("single");
 
   return (
     // 🛠️ Ajuste 1: Trocamos 'min-h-screen' por 'h-screen' e adicionamos 'overflow-hidden' para prender o layout na tela
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-zinc-50 font-sans dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 transition-colors">
       <Header
-        velocidade={velocidade}
-        setVelocidade={setVelocidade}
-        disabled={estaOrdenando}
-        onEmbaralhar={gerarNovoArray}
+        velocidade={left.velocidade}
+        setVelocidade={left.setVelocidade}
+        disabled={left.estaOrdenando}
+        onEmbaralhar={left.gerarNovoArray}
+        viewMode={viewMode}
+        onAlternarModoComparar={() => setViewMode(v => v === "single" ? "compare" : "single")}
       />
 
       {/* 🛠️ Ajuste 2: Adicionado 'overflow-hidden' no corpo principal para controlar as barras laterais */}
@@ -40,28 +38,28 @@ export default function Home() {
             </h2>
             <div className="flex flex-col gap-2.5">
               <Button
-                onClick={executarBubbleSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Bubble Sort"} 
+                onClick={left.executarBubbleSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Bubble Sort"} 
                 label="Bubble Sort"
               />
               <Button
-                onClick={executarSelectionSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Selection Sort"} 
+                onClick={left.executarSelectionSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Selection Sort"} 
                 label="Selection Sort"
               />
               <Button
-                onClick={executarInsertionSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Insertion Sort"} 
+                onClick={left.executarInsertionSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Insertion Sort"} 
                 label="Insertion Sort"
               />
               {/* 🐛 Inseto Corrigido: O status estava checando "Insertion Sort" em vez de "Cocktail Sort" */}
               <Button
-                onClick={executarCocktailSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Cocktail Sort"} 
+                onClick={left.executarCocktailSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Cocktail Sort"} 
                 label="Cocktail Sort"
               />
             </div>
@@ -71,28 +69,28 @@ export default function Home() {
             </h2>
             <div className="flex flex-col gap-2.5">
               <Button
-                onClick={executarMergeSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Merge Sort"} 
+                onClick={left.executarMergeSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Merge Sort"} 
                 label="Merge Sort"
               />
               <Button
-                onClick={executarQuickSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Quick Sort"} 
+                onClick={left.executarQuickSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Quick Sort"} 
                 label="Quick Sort"
               />
               <Button
-                onClick={executarHeapSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Heap Sort"} 
+                onClick={left.executarHeapSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Heap Sort"} 
                 label="Heap Sort"
               />
               {/* 🐛 Inseto Corrigido: O onClick estava chamando 'executarHeapSort' e o status checando 'Shell Sort' */}
               <Button
-                onClick={executarShellSort} 
-                disabled={estaOrdenando} 
-                status={estaOrdenando && nomeAlgoritmo === "Shell Sort"} 
+                onClick={left.executarShellSort} 
+                disabled={left.estaOrdenando} 
+                status={left.estaOrdenando && left.nomeAlgoritmo === "Shell Sort"} 
                 label="Shell Sort"
               />
             </div>
@@ -103,14 +101,53 @@ export default function Home() {
         {/* 🛠️ Ajuste 4: 'overflow-y-auto' garante que as barras ou os cards nunca quebrem o limite da janela */}
         <section className="w-full col-span-1 md:col-span-8 flex flex-col p-4.5 gap-4.5 bg-zinc-50 dark:bg-zinc-950 overflow-x-auto justify-between">
           <div className="flex flex-col gap-4">
-            <MetricsCards 
-              nomeAlgoritmo={nomeAlgoritmo} 
-              complexidade={complexidade} 
-              comparacoes={comparacoes}
-              trocas={trocas}
-              tempo={tempo}  
-            />
-            <SortingVisualizer array={array} comparando={comparando} />
+            
+            { viewMode === "single" ? (
+              <>
+                <MetricsCards
+                  nomeAlgoritmo={left.nomeAlgoritmo}
+                  complexidade={left.complexidade}
+                  comparacoes={left.comparacoes}
+                  trocas={left.trocas}
+                  tempo={left.tempo}
+                />
+
+                <SortingVisualizer
+                  array={left.array}
+                  comparando={left.comparando}
+                />
+              </>
+            ) : (
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col gap-4">
+                  <MetricsCards
+                    nomeAlgoritmo={left.nomeAlgoritmo}
+                    complexidade={left.complexidade}
+                    comparacoes={left.comparacoes}
+                    trocas={left.trocas}
+                    tempo={left.tempo}
+                  />
+                  <SortingVisualizer
+                    array={left.array}
+                    comparando={left.comparando}
+                  />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <MetricsCards
+                    nomeAlgoritmo={right.nomeAlgoritmo}
+                    complexidade={right.complexidade}
+                    comparacoes={right.comparacoes}
+                    trocas={right.trocas}
+                    tempo={right.tempo}
+                  />
+
+                  <SortingVisualizer
+                    array={right.array}
+                    comparando={right.comparando}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <Footer />
