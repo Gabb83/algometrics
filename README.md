@@ -47,6 +47,8 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 ├── src
 │   └── components
 │       ├── Button.tsx
+|       ├── ComparisionPanel.tsx
+|       ├── ComparisionStats.tsx
 |       ├── Footer.tsx
 │       ├── Header.tsx
 │       ├── MetricsCard.tsx
