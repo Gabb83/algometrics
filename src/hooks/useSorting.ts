@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { bubbleSort } from "../algoritms/bubbleSort";
 import { selectionSort } from "../algoritms/selectionSort";
+import { insertionSort } from "../algoritms/insertionSort";
+import { cocktailSort } from "../algoritms/cocktailSort";
 
 export type InfoComplexidade = {
   piorCaso: string;
@@ -185,39 +187,26 @@ export function useSorting() {
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    const n = arr.length;
+    await insertionSort({
+      array: [...array],
+      velocidade,
 
-    // O Insertion Sort começa do segundo elemento (índice 1)
-    for (let i = 1; i < n; i++) {
-      let atual = arr[i];
-      let j = i - 1;
+      shouldStop: () => deveParar,
 
-      // Destaca o elemento atual que estamos tentando encaixar
-      setComparando([i, j]);
-      setComparacoes((prev) => prev + 1);
-      await sleep(velocidade);
-
-      // Empurra os elementos maiores que o 'atual' uma posição para a frente
-      while (j >= 0 && arr[j] > atual) {
-        if (deveParar) return;
-
-        // Mostra a comparação ativa acontecendo na varredura reversa
-        setComparando([j, j + 1]);
-        setComparacoes((prev) => prev + 1);
-
-        arr[j + 1] = arr[j]; // Empurra o elemento para a direita
-        setTrocas((prev) => prev + 1); // Conta como uma movimentação de escrita
-        setArray([...arr]);
-        
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((c) => c + 1);
         await sleep(velocidade);
-        j--;
-      }
-    
-      // Insere o elemento atual na sua posição correta encontrada
-      arr[j + 1] = atual;
-      setArray([...arr]);
-    }
+      },
+
+      onSwap: () => {
+        setTrocas((t) => t + 1);
+      },
+
+      onUpdate: (arr) => {
+        setArray(arr);
+      },
+    });
 
     pararCronometro();
     setComparando([]);
@@ -239,62 +228,27 @@ export function useSorting() {
     setDeveParar(false);
     setEstaOrdenando(true);
     iniciarCronometro();
+    
+    await cocktailSort({
+      array: [...array],
+      velocidade,
 
-    let arr = [...array];
-    let inicio = 0;
-    let fim = arr.length - 1;
-    let houveTroca = true;
+      shouldStop: () => deveParar,
 
-    while (houveTroca) {
-      houveTroca = false;
-
-      // 1ª ETAPA: Da esquerda para a direita (Igual ao Bubble Sort)
-      for (let i = inicio; i < fim; i++) {
-        if (deveParar) return; // Checagem do botão Reset
-
-        setComparando([i, i + 1]);
-        setComparacoes((prev) => prev + 1);
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((c) => c + 1);
         await sleep(velocidade);
+      },
 
-        if (arr[i] > arr[i + 1]) {
-          let temp = arr[i];
-          arr[i] = arr[i + 1];
-          arr[i + 1] = temp;
+      onSwap: () => {
+        setTrocas((t) => t + 1);
+      },
 
-          setTrocas((prev) => prev + 1);
-          setArray([...arr]);
-          houveTroca = true;
-        }
-      }
-      if (!houveTroca) break;
-
-      // Reduz o 'fim' porque o maior elemento já está na posição correta
-      fim--;
-
-      // Reseta para a próxima varredura interna detectar novas trocas
-      houveTroca = false;
-
-      // 2ª ETAPA: Da direita para a esquerda (A mágica do Cocktail)
-      for (let i = fim - 1; i >= inicio; i--) {
-        if (deveParar) return; // Checagem do botão Reset
-
-        setComparando([i, i + 1]);
-        setComparacoes((prev) => prev + 1);
-        await sleep(velocidade);
-
-        if (arr[i] > arr[i + 1]) {
-          let temp = arr[i];
-          arr[i] = arr[i + 1];
-          arr[i + 1] = temp;
-
-          setTrocas((prev) => prev + 1);
-          setArray([...arr]);
-          houveTroca = true;
-        }
-      }
-
-      inicio++;
-    }
+      onUpdate: (arr) => {
+        setArray(arr);
+      },
+    });
 
     pararCronometro();
     setComparando([]);
