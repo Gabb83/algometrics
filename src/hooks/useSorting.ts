@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { bubbleSort } from "../algoritms/bubbleSort";
+import { selectionSort } from "../algoritms/selectionSort";
 
 export type InfoComplexidade = {
   piorCaso: string;
@@ -40,7 +42,11 @@ export function useSorting() {
     return () => pararCronometro();
   }, []);
 
-  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  const sleep = (ms: number): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  };
 
   // Funções de controle do Cronômetro
   const iniciarCronometro = () => {
@@ -93,34 +99,33 @@ export function useSorting() {
     if (estaOrdenando) return;
 
     setNomeAlgoritmo("Bubble Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n)", espaco: "O(1)" });
+    setComplexidade({
+      piorCaso: "O(n²)",
+      melhorCaso: "O(n)",
+      espaco: "O(1)",
+    });
+
     setComparacoes(0);
     setTrocas(0);
     setDeveParar(false);
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    const n = arr.length;
+    await bubbleSort({
+      array: [...array],
+      velocidade,
+      shouldStop: () => deveParar,
 
-    for (let i = 0; i < n; i++) {
-      for (let j = 0; j < n - i - 1; j++) {
-        if (deveParar) return;
-
-        setComparando([j, j + 1]);
-        setComparacoes((prev) => prev + 1); // 🌟 Incrementa comparação
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((c) => c + 1);
         await sleep(velocidade);
+      },
 
-        if (arr[j] > arr[j + 1]) {
-          let temp = arr[j];
-          arr[j] = arr[j + 1];
-          arr[j + 1] = temp;
-          
-          setTrocas((prev) => prev + 1); // 🌟 Incrementa troca
-          setArray([...arr]);
-        }
-      }
-    }
+      onSwap: () => setTrocas((t) => t + 1),
+      onUpdate: (arr) => setArray(arr),
+    });
+
     pararCronometro();
     setComparando([]);
     setEstaOrdenando(false);
@@ -138,31 +143,27 @@ export function useSorting() {
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    const n = arr.length;
+    await selectionSort({
+      array: [...array],
+      velocidade,
 
-    for (let i = 0; i < n - 1; i++) {
-      let indiceMinimo = i;
-      for (let j = i + 1; j < n; j++) {
-        if (deveParar) return;
+      shouldStop: () => deveParar,
 
-        setComparando([j, indiceMinimo]);
-        setComparacoes((prev) => prev + 1); // 🌟 Incrementa comparação
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((c) => c + 1);
         await sleep(velocidade);
+      },
 
-        if (arr[j] < arr[indiceMinimo]) {
-          indiceMinimo = j;
-        }
-      }
-      if (indiceMinimo !== i) {
-        let temp = arr[i];
-        arr[i] = arr[indiceMinimo];
-        arr[indiceMinimo] = temp;
-        
-        setTrocas((prev) => prev + 1); // 🌟 Incrementa troca
-        setArray([...arr]);
-      }
-    }
+      onSwap: () => {
+        setTrocas((t) => t + 1);
+      },
+
+      onUpdate: (arr) => {
+        setArray(arr);
+      },
+    });
+
     pararCronometro();
     setComparando([]);
     setEstaOrdenando(false);
