@@ -10,7 +10,6 @@ export async function cocktailSort(ctx: SortingContext) {
   while (houveTroca) {
     houveTroca = false;
 
-    // Esquerda → Direita
     for (let i = inicio; i < fim; i++) {
       if (ctx.shouldStop()) return;
 
@@ -31,7 +30,6 @@ export async function cocktailSort(ctx: SortingContext) {
     fim--;
     houveTroca = false;
 
-    // Direita → Esquerda
     for (let i = fim - 1; i >= inicio; i--) {
       if (ctx.shouldStop()) return;
 
@@ -46,7 +44,7 @@ export async function cocktailSort(ctx: SortingContext) {
         houveTroca = true;
       }
     }
-
+    
     inicio++;
   }
 }

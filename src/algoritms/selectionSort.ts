@@ -1,5 +1,3 @@
-// src/algoritms/selectionSort.ts
-
 import { SortingContext } from "./types/SortingContext";
 
 export async function selectionSort(ctx: SortingContext) {

@@ -1,5 +1,3 @@
-// src/algoritms/insertionSort.ts
-
 import { SortingContext } from "./types/SortingContext";
 
 export async function insertionSort(ctx: SortingContext) {
@@ -21,7 +19,6 @@ export async function insertionSort(ctx: SortingContext) {
 
       ctx.onSwap();
       ctx.onUpdate([...arr]);
-
       j--;
     }
 
