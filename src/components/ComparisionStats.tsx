@@ -15,9 +15,7 @@ type ItemProps = {
 };
 
 const StatItem = memo(({ 
-  label, 
-  value, 
-  color = "text-zinc-900 dark:text-zinc-100" 
+  label, value, color = "text-zinc-900 dark:text-zinc-100" 
 }: ItemProps) => {
   return (
     <div className="flex items-center justify-between py-2 border-b border-zinc-200/70 dark:border-zinc-800/70 last:border-b-0">
@@ -32,7 +30,6 @@ const StatItem = memo(({
 });
 
 StatItem.displayName = "StatItem";
-
 const formatNumber = (num: number) => new Intl.NumberFormat('pt-BR').format(num);
 
 export default function ComparisonStats({
