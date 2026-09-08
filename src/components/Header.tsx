@@ -13,7 +13,6 @@ export default function Header({
   return (
     <header className="flex flex-col sm:flex-row items-center justify-between px-8 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-4 z-10 shadow-xs">
       <div className="flex items-center gap-2.5 group select-none">
-        {/* Box do Ícone com efeito hover responsivo */}
         <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all duration-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:border-transparent group-hover:scale-105 group-hover:shadow-md group-hover:shadow-indigo-600/20">
           <svg
             className="w-5 h-5"

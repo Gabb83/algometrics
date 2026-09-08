@@ -32,7 +32,6 @@ export default function MetricsCards({
           <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500/40 dark:bg-rose-500/30" />
         </div>
 
-        {/* 3. Card de Melhor Caso */}
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col justify-between relative overflow-hidden shadow-xs">
           <div className="flex justify-between items-center w-full">
             <p className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Melhor Caso</p>
