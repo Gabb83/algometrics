@@ -42,8 +42,10 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 ```
 ├── app
 │   └── page.tsx
+|
 ├── public
 |   └── images
+|
 ├── src
 │   └── components
 │       ├── Button.tsx
@@ -53,15 +55,26 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 │       ├── Header.tsx
 │       ├── MetricsCard.tsx
 |       └── SortingVisualizer.tsx
+|
 ├── hooks
 │   └── useSorting.ts
+|
+├── .dockerignore
 ├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
 ├── package.json
 ├── tsconfig.json
 └── README.md     
 ```
 
 ## 💻 Como Rodar o Projeto (Getting Started)
+
+### **Pré-requisitos:**
+- Node.js e npm (para execução local)
+- Docker e Docker Compose (para execução via container)
+
+### Opção 1: Executando Localmente
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Gabb83/algometrics.git
@@ -77,6 +90,24 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 4. Inicie o servidor de desenvolvimento:
     ```bash
     npm run dev
+    ```
+5. Abra o navegador e acesse  para ver o aplicativo em ação.
+    ```
+    http://localhost:3000
+    ```
+### Opção 2: Executando via Docker
+1. Certifique-se de ter o Docker e o Docker Compose instalados.
+2. Clone o repositório:
+   ```bash
+   git clone https://github.com/Gabb83/algometrics.git
+    ```
+3. Navegue até o diretório do projeto:
+    ```bash
+    cd algometrics
+    ```
+4. Construa a imagem Docker:
+    ```bash
+    docker-compose up --build
     ```
 5. Abra o navegador e acesse  para ver o aplicativo em ação.
     ```
