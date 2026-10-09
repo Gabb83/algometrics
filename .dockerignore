@@ -1,0 +1,9 @@
+.next/
+.vscode/
+node_modules/
+dist/
+build/
+next-env.d.ts
+.git
+.gitignore
+README.md
