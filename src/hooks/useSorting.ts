@@ -259,7 +259,7 @@ export function useSorting() {
     if(estaOrdenando) return;
 
     setNomeAlgoritmo("Quick Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n log n)", espaco: "O(n log n)" });
+    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n log n)", espaco: "O(log n) médio / O(n) pior caso" });
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -389,7 +389,7 @@ export function useSorting() {
     if (estaOrdenando) return;
 
     setNomeAlgoritmo("Shell Sort");
-    setComplexidade({ piorCaso: "O(n log² n)", melhorCaso: "O(n log n)", espaco: "O(1)" });
+    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n log n)", espaco: "O(1)" });
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
