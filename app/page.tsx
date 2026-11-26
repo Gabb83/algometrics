@@ -22,6 +22,11 @@ export default function Home() {
     right.gerarNovoArray();
   };
 
+  const resetarAmbos = () => {
+    left.resetarVisualizador();
+    right.resetarVisualizador();
+  };
+
   const executarComparacao = () => {
     switch (leftAlgorithm) {
       case "bubble":
@@ -85,6 +90,7 @@ export default function Home() {
         setVelocidade={left.setVelocidade}
         disabled={left.estaOrdenando || right.estaOrdenando}
         onEmbaralhar={embaralharAmbos}
+        onResetar={resetarAmbos}
         viewMode={viewMode}
         onAlternarModoComparar={() =>
           setViewMode((v) => (v === "single" ? "compare" : "single"))
@@ -157,7 +163,6 @@ export default function Home() {
             complexidade={left.complexidade}
             comparacoes={left.comparacoes}
             trocas={left.trocas}
-            tempo={left.tempo}
           />
           <SortingVisualizer
             array={left.array}
@@ -240,7 +245,6 @@ export default function Home() {
             complexidade={left.complexidade}
             comparacoes={left.comparacoes}
             trocas={left.trocas}
-            tempo={left.tempo}
           />
           <ComparisonPanel
             nomeAlgoritmo={right.nomeAlgoritmo}
@@ -249,7 +253,6 @@ export default function Home() {
             complexidade={right.complexidade}
             comparacoes={right.comparacoes}
             trocas={right.trocas}
-            tempo={right.tempo}
           />
         </div>
       </main>
