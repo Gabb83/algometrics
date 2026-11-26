@@ -10,11 +10,10 @@ type ComparisonPanelProps = {
   complexidade: InfoComplexidade;
   comparacoes: number;
   trocas: number;
-  tempo: number;
 };
 
 export default function ComparisonPanel({
-  nomeAlgoritmo, array, comparando, complexidade, comparacoes, trocas, tempo,
+  nomeAlgoritmo, array, comparando, complexidade, comparacoes, trocas
 }: ComparisonPanelProps) {
   return (
     <section className="flex flex-col h-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden">
@@ -26,7 +25,6 @@ export default function ComparisonPanel({
         <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
       </div>
 
-      {/* Visualizador */}
       <div className="flex-1 p-5">
         <SortingVisualizer
           array={array}
@@ -34,10 +32,8 @@ export default function ComparisonPanel({
         />
       </div>
 
-      {/* Métricas */}
       <div className="p-5 pt-0">
         <ComparisonStats
-          tempo={tempo}
           comparacoes={comparacoes}
           trocas={trocas}
           complexidade={complexidade}
