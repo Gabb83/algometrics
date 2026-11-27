@@ -434,6 +434,22 @@ export function useSorting() {
     finalizarOrdenacao();
   };
 
+  const definirArray = (novoArray: number[]) => {
+    if (estaOrdenando) return;
+
+    const copia = [...novoArray];
+
+    setArray(copia);
+    setArrayBackup([...copia]);
+    setComparando([]);
+
+    devePararRef.current = false;
+
+    setComparacoes(0);
+    setTrocas(0);
+    setTempo(0);
+  };
+
   // Função auxiliar para limpar estados no fim de qualquer execução
   const finalizarOrdenacao = () => {
     pararCronometro();
@@ -453,6 +469,7 @@ export function useSorting() {
     trocas,
     tempo,
     gerarNovoArray,
+    definirArray,
     resetarVisualizador,
     executarBubbleSort,
     executarSelectionSort,
