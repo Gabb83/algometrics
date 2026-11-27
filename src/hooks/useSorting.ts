@@ -1,7 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+
+import type { SortingContext } from "../algoritms/types/SortingContext";
+import { CONFIG_ALGORITMOS, type InfoComplexidade, type Algoritmo } from "./sortingConfig";
+import { useSortingArray } from "./useSortingArray";
 import { useSortingTimer } from "./useSortingTimer";
+
 import { bubbleSort } from "../algoritms/bubbleSort";
 import { selectionSort } from "../algoritms/selectionSort";
 import { insertionSort } from "../algoritms/insertionSort";
@@ -11,36 +16,28 @@ import { quickSort } from "../algoritms/quickSort";
 import { heapSort } from "../algoritms/heapSort";
 import { shellSort } from "../algoritms/shellSort";
 
-import {
-  TAMANHO_PADRAO,
-  ALTURA_MAXIMA,
-  CONFIG_ALGORITMOS,
-  type InfoComplexidade,
-  type Algoritmo,
-} from "./sortingConfig";
-
 export function useSorting() {
-  // Estados antigos
-  const [array, setArray] = useState<number[]>([]);
-  const [arrayBackup, setArrayBackup] = useState<number[]>([]);
   const [comparando, setComparando] = useState<number[]>([]);
   const [estaOrdenando, setEstaOrdenando] = useState<boolean>(false);
+  const {
+    array,
+    setArray,
+    gerarNovoArray: gerarArrayBase,
+    definirArray: definirArrayBase,
+    restaurarArray,
+  } = useSortingArray();
+  
   const [velocidade, setVelocidade] = useState<number>(50);
   const [nomeAlgoritmo, setNomeAlgoritmo] = useState<string>("Selecionar");
   const [complexidade, setComplexidade] = useState<InfoComplexidade>({
-    piorCaso: "N/A",
-    melhorCaso: "N/A",
-    espaco: "N/A",
+    piorCaso: "N/D",
+    melhorCaso: "N/D",
+    espaco: "N/D",
   });
-
-  // 🌟 NOVOS ESTADOS PARA AS MÉTRICAS EM TEMPO REAL
+  
   const [comparacoes, setComparacoes] = useState<number>(0);
   const [trocas, setTrocas] = useState<number>(0);
-  const devePararRef = useRef<boolean>(false); // 🌟 Resolve o bug de travamento/parada
-
-  useEffect(() => {
-    gerarNovoArray();
-  }, []);
+  const devePararRef = useRef<boolean>(false);
 
   const configurarAlgoritmo = (algoritmo: Algoritmo) => {
     const config = CONFIG_ALGORITMOS[algoritmo];
@@ -65,294 +62,98 @@ export function useSorting() {
 
   const gerarNovoArray = () => {
     if (estaOrdenando) return;
-    const novoArray = Array.from({ length: TAMANHO_PADRAO }, () =>
-      Math.floor(Math.random() * (ALTURA_MAXIMA - 20)) + 20
-    );
-    setArray(novoArray);
-    setArrayBackup(novoArray);
+
+    gerarArrayBase();
     setComparando([]);
     devePararRef.current = false;
-    
     setComparacoes(0);
     setTrocas(0);
     resetarCronometro();
   };
 
   const resetarVisualizador = () => {
-    devePararRef.current = true; // Avisa instantaneamente os loops para pararem
+    devePararRef.current = true;
     pararCronometro();
-    setArray([...arrayBackup]);
+    restaurarArray();
     setComparando([]);
     setEstaOrdenando(false);
     setNomeAlgoritmo("Nenhum Selecionado");
-    setComplexidade({ piorCaso: "---", melhorCaso: "---", espaco: "---" });
+    setComplexidade({ piorCaso: "N/D", melhorCaso: "N/D", espaco: "N/D" });
     setComparacoes(0);
     setTrocas(0);
     resetarCronometro();
   };
-
-  // ALGORITMO: BUBBLE SORT
-  const executarBubbleSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("bubble");
-    
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await bubbleSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep, // 🌟 Adicione essa linha aqui para satisfazer a interface!
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((c) => c + 1);
-        await sleep(velocidadeRef.current);
-      },
-
-      onSwap: () => setTrocas((t) => t + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: SELECTION SORT
-  const executarSelectionSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("selection");
-
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await selectionSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((c) => c + 1);
-        await sleep(velocidadeRef.current);
-      },
-      onSwap: () => setTrocas((t) => t + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: INSERTION SORT
-  const executarInsertionSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("insertion");
-
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await insertionSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((c) => c + 1);
-        await sleep(velocidadeRef.current);
-      },
-      onSwap: () => setTrocas((t) => t + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: COCKTAIL SORT
-  const executarCocktailSort = async () => {
-    if(estaOrdenando) return;
-
-    configurarAlgoritmo("cocktail");
-
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await cocktailSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((c) => c + 1);
-        await sleep(velocidadeRef.current);
-      },
-      onSwap: () => setTrocas((t) => t + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: MERGE SORT
-  const executarMergeSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("merge");
-    
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await mergeSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((prev) => prev + 1);
-        await sleep(velocidadeRef.current);
-      },
-      onSwap: () => setTrocas((prev) => prev + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: QUICK SORT  
-  const executarQuickSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("quick");
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await quickSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((prev) => prev + 1);
-        await sleep(velocidadeRef.current);
-      },
-
-      onSwap: () => setTrocas((prev) => prev + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: HEAP SORT
-  const executarHeapSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("heap");
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await heapSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((prev) => prev + 1);
-        await sleep(velocidadeRef.current);
-      },
-
-      onSwap: () => setTrocas((prev) => prev + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
-
-  // ALGORITMO: SHELL SORT  
-  const executarShellSort = async () => {
-    if (estaOrdenando) return;
-
-    configurarAlgoritmo("shell");
-    setComparacoes(0);
-    setTrocas(0);
-    devePararRef.current = false;
-    setEstaOrdenando(true);
-    iniciarCronometro();
-
-    await shellSort({
-      array: [...array],
-      velocidade: velocidadeRef.current,
-      shouldStop: () => devePararRef.current,
-      sleep,
-
-      onCompare: async (i, j) => {
-        setComparando([i, j]);
-        setComparacoes((prev) => prev + 1);
-        await sleep(velocidadeRef.current);
-      },
-
-      onSwap: () => setTrocas((prev) => prev + 1),
-      onUpdate: (arr) => setArray(arr),
-    });
-
-    finalizarOrdenacao();
-  };
+  
+  const executarBubbleSort = () =>
+    executarAlgoritmo("bubble", bubbleSort);
+  const executarSelectionSort = () =>
+    executarAlgoritmo("selection", selectionSort);
+  const executarInsertionSort = () =>
+    executarAlgoritmo("insertion", insertionSort);
+  const executarCocktailSort = () =>
+    executarAlgoritmo("cocktail", cocktailSort);
+  const executarMergeSort = () =>
+    executarAlgoritmo("merge", mergeSort);
+  const executarQuickSort = () =>
+    executarAlgoritmo("quick", quickSort);
+  const executarHeapSort = () =>
+    executarAlgoritmo("heap", heapSort);
+  const executarShellSort = () =>
+    executarAlgoritmo("shell", shellSort);
 
   const definirArray = (novoArray: number[]) => {
     if (estaOrdenando) return;
 
-    const copia = [...novoArray];
-
-    setArray(copia);
-    setArrayBackup([...copia]);
+    definirArrayBase(novoArray);
     setComparando([]);
-
     devePararRef.current = false;
-
     setComparacoes(0);
     setTrocas(0);
     resetarCronometro();
   };
 
-  // Função auxiliar para limpar estados no fim de qualquer execução
   const finalizarOrdenacao = () => {
     pararCronometro();
     setComparando([]);
     setEstaOrdenando(false);
+  };
+
+  type FuncaoOrdenacao = (ctx: SortingContext) => Promise<void>;
+  const executarAlgoritmo = async (algoritmo: Algoritmo, funcaoOrdenacao: FuncaoOrdenacao) => {
+    if (estaOrdenando) return;
+
+    configurarAlgoritmo(algoritmo);
+    setComparacoes(0);
+    setTrocas(0);
+    setComparando([]);
+    devePararRef.current = false;
+    setEstaOrdenando(true);
+    iniciarCronometro();
+
+    const contexto: SortingContext = {
+      array: [...array],
+      velocidade: velocidadeRef.current,
+      shouldStop: () => devePararRef.current,
+      sleep,
+
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidadeRef.current);
+      },
+      onSwap: () => {
+        setTrocas((prev) => prev + 1);
+      },
+      onUpdate: (novoArray) => {
+        setArray(novoArray);
+      },
+    };
+
+    try {
+      await funcaoOrdenacao(contexto);
+    } finally {
+      finalizarOrdenacao();
+    }
   };
 
   return {
