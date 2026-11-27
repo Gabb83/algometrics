@@ -7,6 +7,9 @@ import { selectionSort } from "../algoritms/selectionSort";
 import { insertionSort } from "../algoritms/insertionSort";
 import { cocktailSort } from "../algoritms/cocktailSort";
 import { mergeSort } from "../algoritms/mergeSort";
+import { quickSort } from "../algoritms/quickSort";
+import { heapSort } from "../algoritms/heapSort";
+import { shellSort } from "../algoritms/shellSort";
 
 import {
   TAMANHO_PADRAO,
@@ -239,65 +242,34 @@ export function useSorting() {
     finalizarOrdenacao();
   };
 
-  // ALGORITMO: QUICK SORT
+  // ALGORITMO: QUICK SORT  
   const executarQuickSort = async () => {
-    if(estaOrdenando) return;
+    if (estaOrdenando) return;
 
     configurarAlgoritmo("quick");
-    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    await quicksortRecursivo(arr, 0, arr.length - 1);
+    await quickSort({
+      array: [...array],
+      velocidade: velocidadeRef.current,
+      shouldStop: () => devePararRef.current,
+      sleep,
+
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidadeRef.current);
+      },
+
+      onSwap: () => setTrocas((prev) => prev + 1),
+      onUpdate: (arr) => setArray(arr),
+    });
 
     finalizarOrdenacao();
-  };
-
-  const quicksortRecursivo = async (arr: number[], inicio: number, fim: number) => {
-    if (inicio >= fim || devePararRef.current) return;
-
-    const indicePivo = await particionar(arr, inicio, fim);
-
-    await quicksortRecursivo(arr, inicio, indicePivo - 1);
-    await quicksortRecursivo(arr, indicePivo + 1, fim);
-  };
-
-  const particionar = async (arr: number[], inicio: number, fim: number): Promise<number> => {
-    let pivote = arr[fim];
-    let i = inicio - 1;
-
-    for (let j = inicio; j < fim; j++) {
-      if (devePararRef.current) return fim;
-
-      setComparando([j, fim]);
-      setComparacoes((prev) => prev + 1);
-      await sleep(velocidadeRef.current);
-
-      if (arr[j] < pivote) {
-        i++;
-        let temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-
-        setTrocas((prev) => prev + 1);
-        setArray([...arr]);
-      }
-    }
-
-    if (!devePararRef.current) {
-      let temp = arr[i + 1];
-      arr[i + 1] = arr[fim];
-      arr[fim] = temp;
-
-      setTrocas((prev) => prev + 1);
-      setArray([...arr]);
-    }
-
-    return i + 1;
   };
 
   // ALGORITMO: HEAP SORT
@@ -305,116 +277,57 @@ export function useSorting() {
     if (estaOrdenando) return;
 
     configurarAlgoritmo("heap");
-
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    const n = arr.length;
+    await heapSort({
+      array: [...array],
+      velocidade: velocidadeRef.current,
+      shouldStop: () => devePararRef.current,
+      sleep,
 
-    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-      if (devePararRef.current) return;
-      await heapify(arr, n, i);
-    }
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
+        setComparacoes((prev) => prev + 1);
+        await sleep(velocidadeRef.current);
+      },
 
-    for (let i = n - 1; i > 0; i--) {
-      if (devePararRef.current) return;
-
-      let temp = arr[0];
-      arr[0] = arr[i];
-      arr[i] = temp;
-
-      setTrocas((prev) => prev + 1);
-      setArray([...arr]);
-      await sleep(velocidadeRef.current);
-
-      await heapify(arr, i, 0);
-    }
+      onSwap: () => setTrocas((prev) => prev + 1),
+      onUpdate: (arr) => setArray(arr),
+    });
 
     finalizarOrdenacao();
   };
 
-  const heapify = async (arr: number[], tamanho: number, i: number) => {
-    if (devePararRef.current) return;
-
-    let maior = i;
-    let esquerda = 2 * i + 1;
-    let direita = 2 * i + 2;
-
-    if (esquerda < tamanho) {
-      setComparando([esquerda, maior]);
-      setComparacoes((prev) => prev + 1);
-      if (arr[esquerda] > arr[maior]) maior = esquerda;
-    }
-
-    if (direita < tamanho) {
-      setComparando([direita, maior]);
-      setComparacoes((prev) => prev + 1);
-      if (arr[direita] > arr[maior]) maior = direita;
-    }
-
-    if (maior !== i) {
-      let troca = arr[i];
-      arr[i] = arr[maior];
-      arr[maior] = troca;
-
-      setTrocas((prev) => prev + 1);
-      setArray([...arr]);
-      await sleep(velocidadeRef.current);
-
-      await heapify(arr, tamanho, maior);
-    }
-  };
-
-  // ALGORITMO: SHELL SORT
+  // ALGORITMO: SHELL SORT  
   const executarShellSort = async () => {
     if (estaOrdenando) return;
 
     configurarAlgoritmo("shell");
-    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
     setEstaOrdenando(true);
     iniciarCronometro();
 
-    let arr = [...array];
-    const n = arr.length;
+    await shellSort({
+      array: [...array],
+      velocidade: velocidadeRef.current,
+      shouldStop: () => devePararRef.current,
+      sleep,
 
-    for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
-      if (devePararRef.current) return;
-
-      for (let i = gap; i < n; i++) {
-        if (devePararRef.current) return;
-
-        let atual = arr[i];
-        let j = i;
-
-        setComparando([j, j - gap]);
+      onCompare: async (i, j) => {
+        setComparando([i, j]);
         setComparacoes((prev) => prev + 1);
         await sleep(velocidadeRef.current);
+      },
 
-        while (j >= gap && arr[j - gap] > atual) {
-          if (devePararRef.current) return;
-
-          setComparando([j, j - gap]);
-          setComparacoes((prev) => prev + 1);
-
-          arr[j] = arr[j - gap];
-          setTrocas((prev) => prev + 1);
-          setArray([...arr]);
-          await sleep(velocidadeRef.current);
-
-          j -= gap;
-        }
-
-        arr[j] = atual;
-        setArray([...arr]);
-      }
-    }
+      onSwap: () => setTrocas((prev) => prev + 1),
+      onUpdate: (arr) => setArray(arr),
+    });
 
     finalizarOrdenacao();
   };

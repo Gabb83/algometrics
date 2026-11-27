@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { InfoComplexidade } from "@/src/hooks/useSorting";
+import type { InfoComplexidade } from "@/src/hooks/sortingConfig";
 
 type ComparisonStatsProps = {
   comparacoes: number;

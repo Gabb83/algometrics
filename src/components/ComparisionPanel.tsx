@@ -1,5 +1,5 @@
 import SortingVisualizer from "./SortingVisualizer";
-import { InfoComplexidade } from "../hooks/useSorting";
+import type { InfoComplexidade } from "../hooks/sortingConfig";
 import ComparisonStats from "./ComparisionStats";
 
 type ComparisonPanelProps = {

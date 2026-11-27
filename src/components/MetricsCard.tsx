@@ -1,4 +1,4 @@
-import { InfoComplexidade } from "@/src/hooks/useSorting";
+import type { InfoComplexidade } from "@/src/hooks/sortingConfig";
 
 type MetricsCardsProps = {
   nomeAlgoritmo: string;
