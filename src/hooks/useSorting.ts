@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useSortingTimer } from "./useSortingTimer";
 import { bubbleSort } from "../algoritms/bubbleSort";
 import { selectionSort } from "../algoritms/selectionSort";
 import { insertionSort } from "../algoritms/insertionSort";
@@ -32,13 +33,11 @@ export function useSorting() {
   // 🌟 NOVOS ESTADOS PARA AS MÉTRICAS EM TEMPO REAL
   const [comparacoes, setComparacoes] = useState<number>(0);
   const [trocas, setTrocas] = useState<number>(0);
-  const [tempo, setTempo] = useState<number>(0);
-
-  // Referências cruciais para sincronização em tempo real
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const tempoInicioRef = useRef<number>(0);
   const devePararRef = useRef<boolean>(false); // 🌟 Resolve o bug de travamento/parada
-  const velocidadeRef = useRef<number>(velocidade); // Mantém a velocidade atualizada nos loops
+
+  useEffect(() => {
+    gerarNovoArray();
+  }, []);
 
   const configurarAlgoritmo = (algoritmo: Algoritmo) => {
     const config = CONFIG_ALGORITMOS[algoritmo];
@@ -47,38 +46,19 @@ export function useSorting() {
     setComplexidade(config.complexidade);
   };
 
-  // Sincroniza a referência da velocidade sempre que o estado mudar
-  useEffect(() => {
-    velocidadeRef.current = velocidade;
-  }, [velocidade]);
-
-  useEffect(() => {
-    gerarNovoArray();
-    return () => pararCronometro();
-  }, []);
-
   const sleep = (ms: number): Promise<void> => {
     return new Promise<void>((resolve) => {
       setTimeout(resolve, ms);
     });
   };
 
-  // Funções de controle do Cronômetro
-  const iniciarCronometro = () => {
-    pararCronometro();
-    setTempo(0);
-    tempoInicioRef.current = Date.now();
-    timerRef.current = setInterval(() => {
-      setTempo((Date.now() - tempoInicioRef.current) / 1000);
-    }, 10);
-  };
-
-  const pararCronometro = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
+  const {
+    tempo,
+    velocidadeRef,  
+    iniciarCronometro,
+    pararCronometro,
+    resetarCronometro,
+  } = useSortingTimer(velocidade);
 
   const gerarNovoArray = () => {
     if (estaOrdenando) return;
@@ -92,7 +72,7 @@ export function useSorting() {
     
     setComparacoes(0);
     setTrocas(0);
-    setTempo(0);
+    resetarCronometro();
   };
 
   const resetarVisualizador = () => {
@@ -105,7 +85,7 @@ export function useSorting() {
     setComplexidade({ piorCaso: "---", melhorCaso: "---", espaco: "---" });
     setComparacoes(0);
     setTrocas(0);
-    setTempo(0);
+    resetarCronometro();
   };
 
   // ALGORITMO: BUBBLE SORT
@@ -452,7 +432,7 @@ export function useSorting() {
 
     setComparacoes(0);
     setTrocas(0);
-    setTempo(0);
+    resetarCronometro();
   };
 
   // Função auxiliar para limpar estados no fim de qualquer execução
