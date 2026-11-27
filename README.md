@@ -33,10 +33,10 @@ A aplicação permite que estudantes e desenvolvedores controlem a velocidade da
 <br>
 
 🔸 Algoritmos Avançados
-- Merge Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$
-- Quick Sort - Complexidade de Tempo (Médio Caso): $O(n \log n)$
-- Heap Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$
-- Shell Sort - Complexidade de Tempo (Pior Caso): $O(n^2)$
+- Merge Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$ | Espaço: $O(n)$
+- Quick Sort - Complexidade de Tempo (Médio Caso): $O(n \log n)$ | Pior Caso: $O(n^2)$ | Espaço: $O(\log n)$ médio e $O(n)$ no pior caso
+- Heap Sort - Complexidade de Tempo (Todos os Casos): $O(n \log n)$ | Espaço: $O(1)$
+- Shell Sort - Complexidade de Tempo (Pior Caso): $O(n^2)$ | Espaço: $O(1)$
 
 ## 📂 Estrutura do Projeto
 ```

@@ -17,9 +17,36 @@ export default function Home() {
   const [leftAlgorithm, setLeftAlgorithm] = useState("bubble");
   const [rightAlgorithm, setRightAlgorithm] = useState("merge");
 
+  const gerarEntradaCompartilhada = (): number[] => {
+    return Array.from({ length: 24 }, () =>
+      Math.floor(Math.random() * (320 - 20)) + 20
+    );
+  };
+
   const embaralharAmbos = () => {
-    left.gerarNovoArray();
-    right.gerarNovoArray();
+    const novoArray = gerarEntradaCompartilhada();
+
+    left.definirArray(novoArray);
+    right.definirArray(novoArray);
+  };
+
+  const alternarModoComparar = () => {
+    if (viewMode === "single") {
+      const entradaCompartilhada = gerarEntradaCompartilhada();
+
+      left.definirArray(entradaCompartilhada);
+      right.definirArray(entradaCompartilhada);
+
+      setViewMode("compare");
+      return;
+    }
+
+    setViewMode("single");
+  };
+
+  const resetarAmbos = () => {
+    left.resetarVisualizador();
+    right.resetarVisualizador();
   };
 
   const executarComparacao = () => {
@@ -85,10 +112,9 @@ export default function Home() {
         setVelocidade={left.setVelocidade}
         disabled={left.estaOrdenando || right.estaOrdenando}
         onEmbaralhar={embaralharAmbos}
+        onResetar={resetarAmbos}
         viewMode={viewMode}
-        onAlternarModoComparar={() =>
-          setViewMode((v) => (v === "single" ? "compare" : "single"))
-        }
+        onAlternarModoComparar={alternarModoComparar}
       />
 
       { viewMode === "single" ? (
@@ -157,7 +183,6 @@ export default function Home() {
             complexidade={left.complexidade}
             comparacoes={left.comparacoes}
             trocas={left.trocas}
-            tempo={left.tempo}
           />
           <SortingVisualizer
             array={left.array}
@@ -240,7 +265,6 @@ export default function Home() {
             complexidade={left.complexidade}
             comparacoes={left.comparacoes}
             trocas={left.trocas}
-            tempo={left.tempo}
           />
           <ComparisonPanel
             nomeAlgoritmo={right.nomeAlgoritmo}
@@ -249,7 +273,6 @@ export default function Home() {
             complexidade={right.complexidade}
             comparacoes={right.comparacoes}
             trocas={right.trocas}
-            tempo={right.tempo}
           />
         </div>
       </main>

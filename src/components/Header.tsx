@@ -3,12 +3,13 @@ type HeaderProps = {
   setVelocidade: (v: number) => void;
   disabled: boolean;
   onEmbaralhar: () => void;
+  onResetar: () => void;
   viewMode: "single" | "compare";
   onAlternarModoComparar: () => void;
 }
 
 export default function Header({
-  velocidade, setVelocidade, disabled, onEmbaralhar, viewMode, onAlternarModoComparar
+  velocidade, setVelocidade, disabled, onEmbaralhar, onResetar, viewMode, onAlternarModoComparar
 }: HeaderProps) {
   return (
     <header className="flex flex-col sm:flex-row items-center justify-between px-8 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-4 z-10 shadow-xs">
@@ -86,6 +87,26 @@ export default function Header({
             </svg>
             
             {viewMode === "compare" ? "Modo Único" : "Comparar"}
+          </button>
+
+          <button
+            onClick={onResetar}
+            className="group flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-zinc-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-200 active:scale-95 shadow-xs cursor-pointer"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 4v6h6M5.5 15a7 7 0 1 0 1.5-7"
+              />
+            </svg>
+            Resetar
           </button>
         </div>
       </div>
