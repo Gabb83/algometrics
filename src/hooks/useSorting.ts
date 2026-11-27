@@ -7,16 +7,15 @@ import { insertionSort } from "../algoritms/insertionSort";
 import { cocktailSort } from "../algoritms/cocktailSort";
 import { mergeSort } from "../algoritms/mergeSort";
 
-export type InfoComplexidade = {
-  piorCaso: string;
-  melhorCaso: string;
-  espaco: string;
-};
+import {
+  TAMANHO_PADRAO,
+  ALTURA_MAXIMA,
+  CONFIG_ALGORITMOS,
+  type InfoComplexidade,
+  type Algoritmo,
+} from "./sortingConfig";
 
 export function useSorting() {
-  const TAMANHO_PADRAO = 24;
-  const ALTURA_MAXIMA = 320;
-
   // Estados antigos
   const [array, setArray] = useState<number[]>([]);
   const [arrayBackup, setArrayBackup] = useState<number[]>([]);
@@ -40,6 +39,13 @@ export function useSorting() {
   const tempoInicioRef = useRef<number>(0);
   const devePararRef = useRef<boolean>(false); // 🌟 Resolve o bug de travamento/parada
   const velocidadeRef = useRef<number>(velocidade); // Mantém a velocidade atualizada nos loops
+
+  const configurarAlgoritmo = (algoritmo: Algoritmo) => {
+    const config = CONFIG_ALGORITMOS[algoritmo];
+
+    setNomeAlgoritmo(config.nome);
+    setComplexidade(config.complexidade);
+  };
 
   // Sincroniza a referência da velocidade sempre que o estado mudar
   useEffect(() => {
@@ -106,9 +112,8 @@ export function useSorting() {
   const executarBubbleSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Bubble Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n)", espaco: "O(1)" });
-
+    configurarAlgoritmo("bubble");
+    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -138,8 +143,8 @@ export function useSorting() {
   const executarSelectionSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Selection Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n²)", espaco: "O(1)" });
+    configurarAlgoritmo("selection");
+
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -168,8 +173,8 @@ export function useSorting() {
   const executarInsertionSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Insertion Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n)", espaco: "O(1)" });
+    configurarAlgoritmo("insertion");
+
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -198,8 +203,8 @@ export function useSorting() {
   const executarCocktailSort = async () => {
     if(estaOrdenando) return;
 
-    setNomeAlgoritmo("Cocktail Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n)", espaco: "O(1)" });
+    configurarAlgoritmo("cocktail");
+
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -228,8 +233,8 @@ export function useSorting() {
   const executarMergeSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Merge Sort");
-    setComplexidade({ piorCaso: "O(n log n)", melhorCaso: "O(n log n)", espaco: "O(n)" });
+    configurarAlgoritmo("merge");
+    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -258,8 +263,8 @@ export function useSorting() {
   const executarQuickSort = async () => {
     if(estaOrdenando) return;
 
-    setNomeAlgoritmo("Quick Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n log n)", espaco: "O(log n) médio / O(n) pior caso" });
+    configurarAlgoritmo("quick");
+    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -319,8 +324,8 @@ export function useSorting() {
   const executarHeapSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Heap Sort");
-    setComplexidade({ piorCaso: "O(n log n)", melhorCaso: "O(n log n)", espaco: "O(1)" });
+    configurarAlgoritmo("heap");
+
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
@@ -388,8 +393,8 @@ export function useSorting() {
   const executarShellSort = async () => {
     if (estaOrdenando) return;
 
-    setNomeAlgoritmo("Shell Sort");
-    setComplexidade({ piorCaso: "O(n²)", melhorCaso: "O(n log n)", espaco: "O(1)" });
+    configurarAlgoritmo("shell");
+    
     setComparacoes(0);
     setTrocas(0);
     devePararRef.current = false;
