@@ -1,4 +1,4 @@
-import ComparisonPanel from "@/src/components/ComparisionPanel";
+import ComparisonPanel from "@/src/components/ComparisonPanel";
 import type { Algoritmo } from "@/src/hooks/sortingConfig";
 import { useSorting } from "@/src/hooks/useSorting";
 

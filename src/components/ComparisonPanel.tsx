@@ -1,6 +1,6 @@
 import SortingVisualizer from "./SortingVisualizer";
 import type { InfoComplexidade } from "../hooks/sortingConfig";
-import ComparisonStats from "./ComparisionStats";
+import ComparisonStats from "./ComparisonStats";
 
 type ComparisonPanelProps = {
   nomeAlgoritmo: string;
