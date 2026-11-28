@@ -1,11 +1,9 @@
 "use client";
 
-import Button from "@/src/components/Button";
+
 import ComparisonPanel from "@/src/components/ComparisionPanel";
-import Footer from "@/src/components/Footer";
+import SingleModeView from "@/src/components/single-mode/SingleModeView";
 import Header from "@/src/components/Header";
-import MetricsCards from "@/src/components/MetricsCard";
-import SortingVisualizer from "@/src/components/SortingVisualizer";
 import { useSorting } from "@/src/hooks/useSorting";
 import { useState } from "react";
 
@@ -118,79 +116,7 @@ export default function Home() {
       />
 
       { viewMode === "single" ? (
-      <main className="grid grid-cols-1 md:grid-cols-10 flex-1 overflow-hidden">
-        <section className="col-span-1 md:col-span-2 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-6 overflow-y-auto">
-          <h2 className="text-xs font-semibold text-zinc-400 uppercase mb-3">Algoritmos Simples</h2>
-          <div className="flex flex-col gap-2.5">
-            <Button
-              onClick={left.executarBubbleSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Bubble Sort"}
-              label="Bubble Sort"
-            />
-            <Button
-              onClick={left.executarSelectionSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Selection Sort"}
-              label="Selection Sort"
-            />
-            <Button
-              onClick={left.executarInsertionSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Insertion Sort"}
-              label="Insertion Sort"
-            />
-            <Button
-              onClick={left.executarCocktailSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Cocktail Sort"}
-              label="Cocktail Sort"
-            />
-          </div>
-
-          <h2 className="text-xs font-semibold text-zinc-400 uppercase mt-8 mb-3">Algoritmos Avançados</h2>
-          <div className="flex flex-col gap-2.5">
-            <Button
-              onClick={left.executarMergeSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Merge Sort"}
-              label="Merge Sort"
-            />
-            <Button
-              onClick={left.executarQuickSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Quick Sort"}
-              label="Quick Sort"
-            />
-            <Button
-              onClick={left.executarHeapSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Heap Sort"}
-              label="Heap Sort"
-            />
-            <Button
-              onClick={left.executarShellSort}
-              disabled={left.estaOrdenando}
-              status={left.estaOrdenando && left.nomeAlgoritmo === "Shell Sort"}
-              label="Shell Sort"
-            />
-          </div>
-        </section>
-
-        <section className="col-span-1 md:col-span-8 p-5 flex flex-col gap-5 overflow-y-auto">
-          <MetricsCards
-            nomeAlgoritmo={left.nomeAlgoritmo}
-            complexidade={left.complexidade}
-            comparacoes={left.comparacoes}
-            trocas={left.trocas}
-          />
-          <SortingVisualizer
-            array={left.array}
-            comparando={left.comparando}
-          />
-          <Footer />
-        </section>
-      </main>
+        <SingleModeView sorting={left} />
       ) : (
       <main className="flex-1 overflow-y-auto bg-zinc-50/50 dark:bg-zinc-950/20 p-6 transition-colors duration-200">
         <div className="mb-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs overflow-hidden">
